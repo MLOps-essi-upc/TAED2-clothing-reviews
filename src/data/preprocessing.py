@@ -8,24 +8,22 @@ from nltk.tokenize import word_tokenize
 from nltk.stem import SnowballStemmer
 import requests
 import os
-from zipfile import ZipFile
+import zipfile
+import io
+from git import Repo
+from bs4 import BeautifulSoup
+import opendatasets as od
+import kaggle
 
 def download_df() -> string:
-    dataset_url = "https://www.kaggle.com/datasets/nicapotato/womens-ecommerce-clothing-reviews"
-    download_dir = "https://github.com/MLOps-essi-upc/clothing-reviews/blob/97e27f428bab87e3720513dc88a98977ca19e698/data/external"
-    os.makedirs(download_dir, exist_ok=True)
-    # Download the dataset
-    response = requests.get(dataset_url)
+    download_dir = "/Users/claudialen/Dropbox/UNI/7eQuadri/TAED2/clothing-reviews/data/external"
+    username = "nicapotato"
+    dataset_name = "womens-ecommerce-clothing-reviews"
+
+    # Download the dataset in CSV format
+    kaggle.api.dataset_download_files(f"{username}/{dataset_name}", path=download_dir, unzip=True)
 
 
-    if response.status_code == 200:
-        # Save the downloaded dataset as a CSV file
-        with open(os.path.join(download_dir, "dataset.csv"), "wb") as file:
-            file.write(response.content)
-
-        print("Dataset downloaded as dataset.csv.")
-    else:
-        print("Failed to download the dataset. Check the URL or your internet connection.")
 def create_df() -> pd.DataFrame:
     """
         Reads data from csv and creates a DataFrame from it.
@@ -36,9 +34,8 @@ def create_df() -> pd.DataFrame:
         Returns:
             DataFrame: The DataFrame with the csv file's data.
     """
-    dataframe = pd.read_csv("clothing-reviews/data/external/dataset.csv")
+    dataframe = pd.read_csv("/Users/claudialen/Dropbox/UNI/7eQuadri/TAED2/clothing-reviews/data/external/Womens Clothing E-Commerce Reviews.csv")
     return dataframe
-
 
 def dropping(dataframe) -> pd.DataFrame:
     """
@@ -51,7 +48,7 @@ def dropping(dataframe) -> pd.DataFrame:
             dataframe: The changed DataFrame.
     """
     dataframe.drop(
-        ["Unnamed:0", "Title", "Positive Feedback Count", "Division Name", "Department Name", "Class Name", "Age",
+        ["Title", "Positive Feedback Count", "Division Name", "Department Name", "Class Name", "Age",
          "Clothing ID", "Rating"], axis=1, inplace=True)
     dataframe.drop_duplicates(inplace=True)
     return dataframe
@@ -105,6 +102,14 @@ def stemmed_text(dataframe) -> pd.DataFrame:
     dataframe['Stemmed Review Text'] = dataframe['Review Text'].apply(lambda text: " ".join([stem.stem(w) for w in text]))
     return dataframe
 
+def new_dataset(dataframe):
+    # Specify the path where you want to save the CSV file
+    csv_file_path = "/Users/claudialen/Dropbox/UNI/7eQuadri/TAED2/clothing-reviews/data/interim/preprocessed_data.csv"
+
+    # Save the DataFrame as a CSV file
+    dataframe.to_csv(csv_file_path, index=False)  # Use index=False to exclude the row index in the CSV
+
+
 if __name__ == '__main__':
     download_df()
     df = create_df()
@@ -112,4 +117,5 @@ if __name__ == '__main__':
     df = dropping(df)
     df = tokenization(df)
     df = stemmed_text(df)
+    new_dataset(df)
 
