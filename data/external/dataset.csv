@@ -1,0 +1,186 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Women&#x27;s E-Commerce Clothing Reviews | Kaggle</title>
+  <meta charset="utf-8" />
+    <meta name="robots" content="index, follow" />
+  <meta name="description" content="23,000 Customer Reviews and Ratings " />
+  <meta name="turbolinks-cache-control" content="no-cache" />
+    <meta name="keywords" content="business,earth and nature,internet,nlp,ratings and reviews,text mining" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0">
+  <meta name="theme-color" content="#008ABC" />
+  <script nonce="lky&#x2B;Pp5YBqxZFqHr0Ww4GQ==" type="text/javascript">
+    window["pageRequestStartTime"] = 1696167494792;
+    window["pageRequestEndTime"] = 1696167494960;
+    window["initialPageLoadStartTime"] = new Date().getTime();
+  </script>
+  <link rel="preconnect" href="https://www.google-analytics.com" crossorigin="anonymous" /><link rel="preconnect" href="https://stats.g.doubleclick.net" /><link rel="preconnect" href="https://storage.googleapis.com" /><link rel="preconnect" href="https://apis.google.com" />
+  <link href="/static/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+  <link rel="manifest" href="/static/json/manifest.json" crossorigin="use-credentials">
+
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/icon?family=Google+Material+Icons&display=block"
+    rel="preload" as="style" />
+  <link href="https://fonts.googleapis.com/css?family=Inter:400,400i,500,500i,600,600i,700,700i&display=swap"
+    rel="preload" as="style" />
+  <link href="https://fonts.googleapis.com/icon?family=Google+Material+Icons&display=block"
+    rel="stylesheet" media="print" id="async-google-font-1" />
+  <link href="https://fonts.googleapis.com/css?family=Inter:400,400i,500,500i,600,600i,700,700i&display=swap"
+    rel="stylesheet" media="print" id="async-google-font-2" />
+  <script nonce="lky&#x2B;Pp5YBqxZFqHr0Ww4GQ==" type="text/javascript">
+    const styleSheetIds = ["async-google-font-1", "async-google-font-2"];
+    styleSheetIds.forEach(function (id) {
+      document.getElementById(id).addEventListener("load", function() {
+        this.media = "all";
+      });
+    });
+  </script>
+
+    <link rel="canonical" href="https://www.kaggle.com/datasets/nicapotato/womens-ecommerce-clothing-reviews" />
+    <link rel="stylesheet" type="text/css" href="/static/assets/vendor.css?v=dd064d680b3ca5c8a76b" />
+    <link rel="stylesheet" type="text/css" href="/static/assets/app.css?v=d698eb8243d93fb284a5" />
+  
+    
+ 
+      <script nonce="lky&#x2B;Pp5YBqxZFqHr0Ww4GQ==">
+        try{(function(a,s,y,n,c,h,i,d,e){d=s.createElement("style");
+        d.appendChild(s.createTextNode(""));s.head.appendChild(d);d=d.sheet;
+        y=y.map(x => d.insertRule(x + "{ opacity: 0 !important }"));
+        h.start=1*new Date;h.end=i=function(){y.forEach(x => x<d.cssRules.length ? d.deleteRule(x) : {})};
+        (a[n]=a[n]||[]).hide=h;setTimeout(function(){i();h.end=null},c);h.timeout=c;
+        })(window,document,['.site-header-react__nav'],'dataLayer',2000,{'GTM-52LNT9S':true});}catch(ex){}
+    </script>
+    <script nonce="lky&#x2B;Pp5YBqxZFqHr0Ww4GQ==">
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-T7QHS60L4Q', {
+            'optimize_id': 'GTM-52LNT9S',
+            'displayFeaturesTask': null,
+            'send_page_view': false,
+            'content_group1': 'Datasets'
+        });
+    </script>
+    <script nonce="lky&#x2B;Pp5YBqxZFqHr0Ww4GQ==" async src="https://www.googletagmanager.com/gtag/js?id=G-T7QHS60L4Q"></script>
+
+  
+    
+    <meta property="og:url" content="https://www.kaggle.com/datasets/nicapotato/womens-ecommerce-clothing-reviews" />
+    <meta property="og:title" content="Women&#x27;s E-Commerce Clothing Reviews" />
+    <meta property="og:description" content="23,000 Customer Reviews and Ratings " />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://storage.googleapis.com/kaggle-datasets-images/11827/16290/140ca3b71ec51512dcac444c57583f25/dataset-card.jpg?t=2018-02-03-20-33-18" />
+    <meta property="fb:app_id" content="2665027677054710" />
+
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@kaggledatasets" />
+
+
+  <meta name="twitter:site" content="@Kaggle" /> 
+  
+    
+    <script nonce="lky+Pp5YBqxZFqHr0Ww4GQ==" type="application/ld+json">{"@context":"http://schema.org/","@type":"Dataset","name":"Women's E-Commerce Clothing Reviews","description":"### Context\n\nWelcome. This is a Women’s Clothing E-Commerce dataset revolving around the reviews written by customers. Its nine supportive features offer a great environment to parse out the text through its multiple dimensions. Because this is real commercial data, it has been anonymized, and references to the company in the review text and body have been replaced with “retailer”.\n\n### Content\n\nThis dataset includes 23486 rows and 10 feature variables. Each row corresponds to a customer review, and includes the variables:\n\n - **Clothing ID:** Integer Categorical variable that refers to the specific piece being reviewed. \n - **Age:** Positive Integer variable of the reviewers age.\n - **Title:** String variable for the title of the review.\n - **Review Text:** String variable for the review body. \n - **Rating:** Positive Ordinal Integer variable for the product score granted by the customer from 1 Worst, to 5 Best. \n - **Recommended IND:** Binary variable stating where the customer recommends the    product where 1 is recommended, 0 is not recommended.    \n - **Positive Feedback Count:** Positive Integer documenting the number of other customers who found this review positive.\n - **Division Name:** Categorical name of the product high level division.\n - **Department Name:** Categorical name of the product department name.\n - **Class Name:** Categorical name of the product class name.\n\n### Acknowledgements\n\nAnonymous but real source\n\n### Inspiration\n\nI look forward to come quality NLP! There is also some great opportunities for feature engineering, and multivariate analysis.\n\n### Publications\n[Statistical Analysis on E-Commerce Reviews, with Sentiment Classification using Bidirectional Recurrent Neural Network](https://www.researchgate.net/publication/323545316_Statistical_Analysis_on_E-Commerce_Reviews_with_Sentiment_Classification_using_Bidirectional_Recurrent_Neural_Network) <br>\nby [Abien Fred Agarap](https://www.kaggle.com/afagarap) - [Github](https://github.com/AFAgarap/ecommerce-reviews-analysis)\n","url":"https://www.kaggle.com/nicapotato/womens-ecommerce-clothing-reviews","version":1,"keywords":["subject, people and society, business","subject, earth and nature","subject, science and technology, internet","analysis, nlp","subject, people and society, business, ratings and reviews","analysis, text mining"],"license":{"@type":"CreativeWork","name":"CC0: Public Domain","url":"https://creativecommons.org/publicdomain/zero/1.0/"},"identifier":["11827"],"includedInDataCatalog":{"@type":"DataCatalog","name":"Kaggle","url":"https://www.kaggle.com"},"creator":{"@type":"Person","name":"nicapotato","url":"https://www.kaggle.com/nicapotato","image":"https://storage.googleapis.com/kaggle-avatars/thumbnails/866788-kg.jpg"},"distribution":[{"@type":"DataDownload","requiresSubscription":true,"encodingFormat":"zip","fileFormat":"zip","contentUrl":"https://www.kaggle.com/datasets/nicapotato/womens-ecommerce-clothing-reviews/download?datasetVersionNumber=1","contentSize":"2924120 bytes"}],"commentCount":8,"dateModified":"2018-02-03T19:59:19.153Z","discussionUrl":"https://www.kaggle.com/nicapotato/womens-ecommerce-clothing-reviews/discussion","alternateName":"23,000 Customer Reviews and Ratings ","isAccessibleForFree":true,"thumbnailUrl":"https://storage.googleapis.com/kaggle-datasets-images/11827/16290/140ca3b71ec51512dcac444c57583f25/dataset-card.jpg?t=2018-02-03-20-33-18","interactionStatistic":[{"@type":"InteractionCounter","interactionType":"http://schema.org/CommentAction","userInteractionCount":8},{"@type":"InteractionCounter","interactionType":"http://schema.org/DownloadAction","userInteractionCount":62470},{"@type":"InteractionCounter","interactionType":"http://schema.org/ViewAction","userInteractionCount":449241},{"@type":"InteractionCounter","interactionType":"http://schema.org/LikeAction","userInteractionCount":1004}]}</script>
+
+
+  
+    
+
+  
+    
+
+
+    <script nonce="lky&#x2B;Pp5YBqxZFqHr0Ww4GQ==">window['useKaggleAnalytics'] = true;</script>
+
+  <script id="gapi-target" nonce="lky&#x2B;Pp5YBqxZFqHr0Ww4GQ==" src="https://apis.google.com/js/api.js" defer
+    async></script>
+  <script nonce="lky+Pp5YBqxZFqHr0Ww4GQ==" src="/static/assets/runtime.js?v=51565a0894ae87c77a8c" data-turbolinks-track="reload"></script>
+  <script nonce="lky+Pp5YBqxZFqHr0Ww4GQ==" src="/static/assets/vendor.js?v=0ec9b4d895a58bd12ce9" data-turbolinks-track="reload"></script>
+  <script nonce="lky+Pp5YBqxZFqHr0Ww4GQ==" src="/static/assets/app.js?v=7efd2146a3ec3abf4af8" data-turbolinks-track="reload"></script>
+    <script nonce="lky&#x2B;Pp5YBqxZFqHr0Ww4GQ==" type="text/javascript">
+      window.kaggleStackdriverConfig = {
+        key: 'AIzaSyA4eNqUdRRskJsCZWVz-qL655Xa5JEMreE',
+        projectId: 'kaggle-161607',
+        service: 'web-fe',
+        version: 'ci',
+        userId: '0'
+      }
+    </script>
+</head>
+
+<body data-turbolinks="false">
+  <main>
+    
+
+
+
+
+
+<div id="site-container"></div>
+
+<div id="site-body" class="hide">
+    
+
+
+<script nonce="lky&#x2B;Pp5YBqxZFqHr0Ww4GQ==" type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+    preferredFont: "TeX",
+    availableFonts: ["STIX", "TeX"],
+    linebreaks: {
+    automatic: true
+    },
+    EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+    inlineMath: [["\\(", "\\)"], ["\\\\(", "\\\\)"]],
+    displayMath: [["$$", "$$"], ["\\[", "\\]"]],
+    processEscapes: true,
+    ignoreClass: "tex2jax_ignore|dno"
+    },
+    TeX: {
+    noUndefined: {
+    attributes: {
+    mathcolor: "red",
+    mathbackground: "#FFEEEE",
+    mathsize: "90%"
+    }
+    }
+    },
+    Macros: {
+    href: "{}"
+    },
+    skipStartupTypeset: true,
+    messageStyle: "none",
+    extensions: ["Safe.js"],
+    });
+</script>
+<script type="text/javascript" nonce="lky&#x2B;Pp5YBqxZFqHr0Ww4GQ==">
+  window.addEventListener("DOMContentLoaded", () => {
+    const head = document.getElementsByTagName("head")[0];
+    const useProdHosts = ["www.kaggle.com", "admin.kaggle.com"];
+    const subdomain = useProdHosts.includes(window.location.hostname) ? "www" : "staging";
+
+    const lib = document.createElement("script");
+    lib.type = "text/javascript";
+    lib.src = `https://${subdomain}.kaggleusercontent.com/static/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML`;
+    head.appendChild(lib);
+  });
+</script>
+
+
+
+
+</div>
+
+
+
+
+  </main>
+</body>
+
+</html>
