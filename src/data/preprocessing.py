@@ -6,8 +6,26 @@ from nltk.corpus import stopwords
 import string
 from nltk.tokenize import word_tokenize
 from nltk.stem import SnowballStemmer
+import requests
+import os
+from zipfile import ZipFile
+
+def download_df() -> string:
+    dataset_url = "https://www.kaggle.com/datasets/nicapotato/womens-ecommerce-clothing-reviews"
+    download_dir = "https://github.com/MLOps-essi-upc/clothing-reviews/blob/97e27f428bab87e3720513dc88a98977ca19e698/data/external"
+    os.makedirs(download_dir, exist_ok=True)
+    # Download the dataset
+    response = requests.get(dataset_url)
 
 
+    if response.status_code == 200:
+        # Save the downloaded dataset as a CSV file
+        with open(os.path.join(download_dir, "dataset.csv"), "wb") as file:
+            file.write(response.content)
+
+        print("Dataset downloaded as dataset.csv.")
+    else:
+        print("Failed to download the dataset. Check the URL or your internet connection.")
 def create_df() -> pd.DataFrame:
     """
         Reads data from csv and creates a DataFrame from it.
@@ -18,7 +36,7 @@ def create_df() -> pd.DataFrame:
         Returns:
             DataFrame: The DataFrame with the csv file's data.
     """
-    dataframe = pd.read_csv(...)
+    dataframe = pd.read_csv("clothing-reviews/data/external/dataset.csv")
     return dataframe
 
 
@@ -88,6 +106,7 @@ def stemmed_text(dataframe) -> pd.DataFrame:
     return dataframe
 
 if __name__ == '__main__':
+    download_df()
     df = create_df()
     df = binarization(df)
     df = dropping(df)
