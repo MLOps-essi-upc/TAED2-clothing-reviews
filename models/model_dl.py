@@ -148,17 +148,18 @@ def convert_data_to_indices(x, y, vocab, label_vocab):
 
 def split_data(x, y):
     """
-        Split data into training and validation sets.
+        Split data into training, validation and testing sets.
 
         Args:
             x (list): List of input data.
             y (list): List of labels.
 
         Returns:
-            tuple: A tuple containing training and validation data splits.
+            tuple: A tuple containing training, validation and testing data splits.
     """
-    x_train, x_val, y_train, y_val = train_test_split(x, y, test_size=0.15, random_state=seed)
-    return (x_train, y_train), (x_val, y_val)
+    x_train, x_temp, y_train, y_temp = train_test_split(x, y, test_size=0.3, random_state=seed)
+    x_val, x_test, y_val, y_test = train_test_split(x_temp, y_temp, test_size=0.5, random_state=seed)
+    return (x_train, y_train), (x_val, y_val), (x_test, y_test)
 
 
 def batch_generator(data, batch_size, token_size):
