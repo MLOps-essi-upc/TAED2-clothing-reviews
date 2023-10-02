@@ -12,7 +12,9 @@ The model used is a Long Short-Term Memory (LSTM) model, a type of recurrent neu
 
 ### Model Description
 
-The LSTM (Long Short-Term Memory) model is a sequential neural network architecture with dropout regularization. It is trained on X% of the dataset, and is designed for opinion analysis and product recommendation prediction. It leverages the structure of text data to capture dependencies and patterns in reviews, allowing it to make binary recommendations based on the sentiment and content of incoming reviews.
+The LSTM (Long Short-Term Memory) model is a sequential neural network architecture and is designed for opinion analysis and product recommendation prediction. It leverages the structure of text data to capture dependencies and patterns in reviews, allowing it to make binary recommendations based on the sentiment and content of incoming reviews. 
+
+Bidirectional and Dropout
 
 
 - **Developed by:** Valèria Caro Via, Esther Fanyanàs i Ropero, Claudia Len Manero
@@ -76,20 +78,27 @@ Use the code below to get started with the model.
 
 ### Training Data
 
+The processed data underwent a split, allocating 85\% of the data for the training dataset. Within this training dataset, a further division was made, reserving 70\% for the primary training subset and 15\% for data validation. 
+
 <!-- This should link to a Data Card, perhaps with a short stub of information on what the training data is all about as well as documentation related to data pre-processing or additional filtering. -->
 
 {{ training_data | default("[More Information Needed]", true)}}
 
 ### Training Procedure 
 
+During the training process, cross-validation techniques were applied to iteratively enhance the model's performance and robustness.
+
 <!-- This relates heavily to the Technical Specifications. Content here should link to that section when it is relevant to the training procedure. -->
-
-#### Preprocessing [optional]
-
-{{ preprocessing | default("[More Information Needed]", true)}}
 
 
 #### Training Hyperparameters
+
+The hyperparameteres have been evaluated through experiments in MlFlow and the best results obtained have been with the follows:
+
+- Batch Size: 512 
+- Embedding Size: 128
+- Hidden Size: 256
+- Token Size: 20000
 
 - **Training regime:** {{ training_regime | default("[More Information Needed]", true)}} <!--fp32, fp16 mixed precision, bf16 mixed precision, bf16 non-mixed precision, fp16 non-mixed precision, fp8 mixed precision -->
 
@@ -101,11 +110,15 @@ Use the code below to get started with the model.
 
 ## Evaluation
 
+The model underwent evaluation during each epoch, following a cross-validation procedure during 10 epochs.
+
 <!-- This section describes the evaluation protocols and provides the results. -->
 
 ### Testing Data, Factors & Metrics
 
 #### Testing Data
+
+We used as a test dataset (15%) a split of the processed data.
 
 <!-- This should link to a Data Card if possible. -->
 
@@ -121,11 +134,11 @@ Use the code below to get started with the model.
 
 The metric used to evaluate the model is *Accuracy*, as we want to be as sure as possible that all opinions are well represented: in the bad ones the product is not recommended and in the good ones it is.
 
-- Accuracy: 
-
 ### Results
 
-{{ results | default("[More Information Needed]", true)}}
+The results were:
+- Training Accuracy: 90.78 %
+- Validation Accuracy: 77.5 %
 
 #### Summary
 
@@ -152,6 +165,8 @@ Carbon emissions can be estimated using the [Machine Learning Impact calculator]
 ## Technical Specifications [optional]
 
 ### Model Architecture and Objective
+
+LSTM
 
 {{ model_specs | default("[More Information Needed]", true)}}
 
