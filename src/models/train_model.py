@@ -6,7 +6,7 @@ import pandas as pd
 import torch
 from torch.utils.data import DataLoader
 from torch.optim import AdamW
-from transformers import AutoTokenizer, AutoModelForSequenceClassification, get_scheduler
+from transformers import AutoTokenizer, get_scheduler
 
 # Hugging Face Dataset
 from datasets import Dataset

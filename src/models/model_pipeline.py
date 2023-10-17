@@ -1,4 +1,5 @@
 from predict_model import *
+from transformers import AutoModelForSequenceClassification
 import joblib
 
 TRAIN_ALL_MODEL = False
@@ -32,4 +33,3 @@ if __name__ == '__main__':
         model = joblib.load('models/dvclive/transfer-learning.joblib.dvc')
 
     predictions(eval_dataloader, model)
-
