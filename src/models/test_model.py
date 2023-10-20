@@ -1,8 +1,11 @@
 from train_model import *
 import evaluate
+from pathlib import Path
+from src import METRICS_DIR
+import json
 
 
-def prediction(eval_dataloader, model):
+def evaluation(eval_dataloader, model):
     """
 
     Args:
@@ -48,8 +51,31 @@ def prediction(eval_dataloader, model):
         predictions_all.append(predictions)
         # Add the prediction batch to the evaluation metric
         metric1.add_batch(predictions=predictions, references=batch["labels"])
+    return metric1.compute()
 
-    print(predictions_all)
+
+def score_function(eval_dataloader, model):
+    """
+
+        Args:
+            eval_dataloader (DataLoader): A DataLoader containing testing data.
+            model (transformers.BertForSequenceClassification): The machine learning model to be evaluated.
+
+        Returns:
+            None
+
+        """
+    # Path to the metrics folder
+    Path("metrics").mkdir(exist_ok=True)
+    metrics_folder_path = METRICS_DIR
+    accuracy = evaluation(eval_dataloader, model)
+    with open(metrics_folder_path / "scores.json", "w") as scores_file:
+        json.dump(
+            'accuracy',
+            accuracy,
+            indent=4,
+        )
+    print("Evaluation completed.")
 
 
 if __name__ == '__main__':

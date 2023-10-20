@@ -1,13 +1,14 @@
 from predict_model import *
 from transformers import AutoModelForSequenceClassification
 import joblib
+from src import PROCESSED_DATA_DIR, MODELS_DIR
 
 TRAIN_ALL_MODEL = False
 
 if __name__ == '__main__':
     # Read the train and test datasets
-    train_data = read_data("data/processed/train_data_processed.csv")
-    test_data = read_data("data/processed/test_data_processed.csv")
+    train_data = read_data(PROCESSED_DATA_DIR / "train/train_data.csv")
+    test_data = read_data(PROCESSED_DATA_DIR / "test/test_data.csv")
 
     # Set this flag based on whether stemming is applied or not
     use_stemming = True
@@ -30,6 +31,6 @@ if __name__ == '__main__':
         model = AutoModelForSequenceClassification.from_pretrained("bert-base-cased", num_labels=2)
         training(train_dataloader, model)
     else:
-        model = joblib.load('models/dvclive/transfer-learning.joblib.dvc')
+        model = joblib.load(MODELS_DIR / 'dvclive/transfer-learning.joblib')
 
-    predictions(eval_dataloader, model)
+    prediction(eval_dataloader, model)

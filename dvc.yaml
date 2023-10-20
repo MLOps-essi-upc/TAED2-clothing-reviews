@@ -1,28 +1,35 @@
 stages:
+  extract_data:
+    cmd: python -m src.features.extract
+    deps:
+      - src/features/extract.py
+    outs:
+      - data/raw
   prepare:
     cmd: python -m src.features.prepare
     deps:
-      - kaggle.json
-      - src/features/prepare.py
+    - data/raw/raw_data.csv
+    - src/features/prepare.py
     params:
-      - prepare
+    - prepare.random_state
+    - prepare.test_size
+    - prepare.train_size
     outs:
-      - data/raw/
-      - data/processed/
+    - data/processed/test
+    - data/processed/train
   train:
     cmd: python -m src.models.train_model
     deps:
-      - data/processed/
-      - src/models/train_model.py
-    params:
-      - train
+    - data/processed/train/train_data.csv
+    - src/models/train_model.py
     outs:
-      - models/
+    - models/transfer-learning.joblib
   test:
     cmd: python -m src.models.test_model
     deps:
-      - data/processed/
-      - models
-      - src/models/test_model.py
-    params:
-      - test
+    - data/processed/test/test_data.csv
+    - models/dvclive/transfer-learning.joblib
+    - src/models/test_model.py
+    metrics:
+    - metrics/scores.json:
+        cache: false

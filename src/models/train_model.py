@@ -96,11 +96,11 @@ def preprocess_and_tokenize_data(data, stem=True) -> Dataset:
     if stem:
         dataset = hg_data.map(tokenize_dataset_stem)
         # Remove the review and index columns because it will not be used in the model
-        dataset = dataset.remove_columns(["Stemmed Review Text", "__index_level_0__"])
+        dataset = dataset.remove_columns(["Stemmed Review Text"])
     else:
         dataset = hg_data.map(tokenize_dataset)
         # Remove the review and index columns because it will not be used in the model
-        dataset = dataset.remove_columns(["Review Text", "__index_level_0__"])
+        dataset = dataset.remove_columns(["Review Text"])
 
     # Rename label to labels because the model expects the name labels
     dataset = dataset.rename_column("Top Product", "labels")
@@ -123,7 +123,7 @@ def training(train_dataloader, model):
 
     """
     # Number of epochs
-    num_epochs = 2
+    num_epochs = 3
 
     # Number of training steps
     num_training_steps = num_epochs * len(train_dataloader)
