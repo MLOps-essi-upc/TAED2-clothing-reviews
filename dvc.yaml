@@ -2,9 +2,9 @@ stages:
   extract_data:
     cmd: python -m src.features.extract
     deps:
-      - src/features/extract.py
+    - src/features/extract.py
     outs:
-      - data/raw
+    - data/raw
   prepare:
     cmd: python -m src.features.prepare
     deps:
@@ -17,3 +17,7 @@ stages:
     outs:
     - data/processed/test
     - data/processed/train
+artifacts:
+  transfer-learning:
+    path: models/transfer-learning.joblib
+    type: model
