@@ -1,0 +1,5 @@
+outs:
+- md5: 031ebee522e3c699e5a951797d0c9f
+  size: 433353994
+  hash: md5
+  path: transfer-learning.joblib
