@@ -59,8 +59,8 @@ The Women’s Clothing E-Commerce dataset includes the following key data fields
 
 ### Data Splits
 
-Data was split for training, testing and validating. All data was derived from the used dataset and not manually generated.
-The split was done randomly with 70% of the data used for training, 15% for testing and 15% for validating.
+Data was split for training and testing. All data was derived from the used dataset and not manually generated.
+The split was done randomly with 80% of the data used for training, 20% for testing.
 
 ## Dataset Creation
 
@@ -73,6 +73,16 @@ The dataset was created for Natural Language Processing and Sentiment Analysis. 
 #### Initial Data Collection and Normalization
 
 Data was collected from a women's clothes store website review section and anonymized to keep the consumer's and store's privacy. All references to the store's name were replaced with the word retailer.
+
+#### Data Transformations and Final Dataset
+
+The project's objective was Sentiment Analysis, involving the analysis of textual data and the identification of variables contributing to accurate word classification.
+
+In the process of determining which dataset variables affected the positivity of reviews, an examination was conducted on the impact of each variable on the "Recommended IND" and "rating" attributes as these are primary indicators of sentiment in the reviews. The analysis concluded that, aside from these two attributes, no other variables had a significant influence on the classification outcome. This conclusion was drawn from the observation that positive and negative values were evenly distributed across all categories of each analyzed attribute. Consequently, the decision was made to remove them as they did not provide additional value to the dataset.
+
+As part of efforts to refine the dataset and establish a more balanced model, a new attribute, "TopProducts", was introduced. This attribute was created to address the need for data balance. It categorizes products as "Top Products" (TopProduct=1) when they have a rating of 5 and as non-top products (TopProduct=0) when their rating falls below 5.
+
+This data processing step resulted in the curation of a dataset with a more balanced and pertinent set of attributes, contributing to the success of the Sentiment Analysis project.
 
 #### Who are the source language producers?
 
