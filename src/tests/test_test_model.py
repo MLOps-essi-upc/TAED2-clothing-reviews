@@ -129,9 +129,9 @@ def test_prediction_invariance(sentence1, sentence2, result):
     """
     Tests if the model is invariant to non-important words
     Args:
-        sentence1: sentence with some sentyment
+        sentence1: sentence with some sentiment
         sentence2: sentence1 with a non-important word changed
-        result: which outputs is exepcted
+        result: which outputs is expected
     """
 
     data = [
@@ -156,7 +156,7 @@ def test_prediction_invariance(sentence1, sentence2, result):
 def test_prediction_directional():
     """
     Tests if our model receives direction of sentences.
-    By changing an important sentyment word, it should
+    By changing an important sentiment word, it should
     return different outputs.
     """
 
