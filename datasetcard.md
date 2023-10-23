@@ -107,11 +107,6 @@ The dataset is also written in a unique language which doesn't contribute to enr
 
 [CC0: Public Domain](https://creativecommons.org/publicdomain/zero/1.0/)
 
-
-### Citation Information
-
-{{ citation_information_section | default("[More Information Needed]", true)}}
-
 ### Contributions
 
 Thanks to @mrc03, @nicapotato and @BurhanYKiyakoglu for adding this dataset.
