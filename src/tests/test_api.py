@@ -36,30 +36,10 @@ def test_root(client):
     assert json["timestamp"] is not None
 
 
-
-def test_get_one_model(client):
-    response = client.get("/model")
-    json = response.json()
-    assert response.status_code == 200
-    assert json["data"] == [
-        {
-            "type": "BertFinetuned",
-            "parameters": {
-            "random_state": 2023},
-            "accuracy": {"accuracy": 0.7981002871658935},
-        }
-    ]
-    assert json["message"] == "OK"
-    assert json["status-code"] == 200
-    assert json["method"] == "GET"
-    assert json["url"] == "http://testserver/model"
-    assert json["timestamp"] is not None
-
-
 def test_get_one_model_not_found(client):
     response = client.get("/model?type=RandomForestClassifier")
-    assert response.status_code == 400
-    assert response.json()["detail"] == "Type not found"
+    assert response.status_code == 404
+    assert response.json()["detail"] == "Not Found"
 
 
 def test_model_prediction(client, payload):

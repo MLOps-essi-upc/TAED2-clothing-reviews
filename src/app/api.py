@@ -1,20 +1,21 @@
+"""
+This module is created to construct an api
+from where users can interact with our model.
+"""
+
 from functools import wraps
-
-from fastapi import FastAPI, HTTPException, Request
-
 from typing import List
-
 from http import HTTPStatus
 import datetime
-
+from fastapi import FastAPI, HTTPException, Request
+from datasets import Dataset
+import pandas as pd
+import torch
 from torch import argmax
 import torch.nn.functional as F
-
 from torch.utils.data import DataLoader
-
-
 from src import ROOT_PATH
-from src.models.train_model import *
+from src.models.train_model import tokenize_dataset
 from src.app.schemas import SentimentRequest, SentimentResponse
 
 
@@ -25,7 +26,8 @@ model_wrappers_list: List[dict] = []
 # Define application
 app = FastAPI(
     title="Sentiment Analysis - Clothing Reviews",
-    description="This API lets you make predictions on clothing-reviews dataset using bert-finetuned model.",
+    description="This API lets you make predictions on "
+                "clothing-reviews dataset using bert-finetuned model.",
     version="0.1",
 )
 
@@ -58,47 +60,35 @@ def construct_response(f):
 @app.on_event("startup")
 def _load_models():
     """Loads models"""
-    sentiment_model = torch.load(MODEL_PATH / "transfer-learning.pt", map_location="cpu")
+    sentiment_model = torch.load(
+        MODEL_PATH / "transfer-learning.pt", map_location="cpu"
+    )
     return sentiment_model
 
 
 @app.get("/", tags=["General"])  # path operation decorator
 @construct_response
-def _index(request: Request):
+def _index():
     """Root endpoint."""
     response = {
         "message": HTTPStatus.OK.phrase,
         "status-code": HTTPStatus.OK,
-        "data": {"message": "Welcome to Sentiment Analysis Clothing Reviews! Please, read the `/docs`!"},
+        "data": {
+            "message": "Welcome to Sentiment Analysis "
+                       "Clothing Reviews! Please, read the `/docs`!"
+        },
     }
     return response
 
 
-def _get_models_list(request: Request, type: str = None):
-    """Return the list of available models"""
-    available_models = [
-        {
-            "type": model["type"],
-            "parameters": model["params"],
-            "accuracy": model["metrics"],
-        }
-        for model in model_wrappers_list
-        if model["type"] == type or type is None
-    ]
-
-    if not available_models:
-        raise HTTPException(
-            status_code=HTTPStatus.BAD_REQUEST, detail="Type not found")
-    else:
-        return {
-            "message": HTTPStatus.OK.phrase,
-            "status-code": HTTPStatus.OK,
-            "data": available_models,
-        }
-
-
 def preprocess(data) -> Dataset:
-
+    """
+    Preprocess data to be used as model input.
+    Args:
+        data: review
+    Returns: a Dataset with the review
+            in torch format
+    """
     words = data.split()
     data = pd.DataFrame({'Review Text': words})
     # Convert Python DataFrame to Hugging Face arrow dataset
@@ -106,7 +96,8 @@ def preprocess(data) -> Dataset:
 
     # Tokenize the data sets
     dataset = hg_data.map(tokenize_dataset)
-    # Remove the review and index columns because it will not be used in the model
+    # Remove the review and index columns because it
+    # will not be used in the model
     dataset = dataset.remove_columns(["Review Text"])
     # Change the format to PyTorch tensors
     dataset.set_format("torch")
@@ -115,9 +106,24 @@ def preprocess(data) -> Dataset:
 
 
 def predict_sentiment(text: str):
-    """."""
+    """
+    Computes the sentiment prediction
+    Args:
+        text: sentence to be analyzed
+
+    Returns:
+        sentiment: prediction
+            1 if positive sentiment
+            0 otherwise
+        probability_value: which
+        probability of containing good
+        or bad sentiment
+    """
     dataset_text = preprocess(text)
-    text_dataloader = DataLoader(dataset=dataset_text, shuffle=True, batch_size=4)
+    text_dataloader = DataLoader(
+        dataset=dataset_text, shuffle=True,
+        batch_size=4
+    )
     model = _load_models()
 
     model.eval()
@@ -148,21 +154,23 @@ def predict_sentiment(text: str):
         pred_prob_all.append(predicted_prob)
         # Get the predicted labels for the batch
         prediction = argmax(logits, dim=-1)
-        # Append the predicted labels for the batch to all the predictions
+        # Append the predicted labels for the batch
+        # to all the predictions
         predictions_all.append(prediction)
 
     class_names = ["No Top", "Top"]
 
-    # Calcular el promedio de las probabilidades para cada etiqueta
-    average_probabilities = torch.mean(torch.stack([p[:len(pred_prob_all[-1])] for p in pred_prob_all]), dim=0)
+    average_probabilities = torch.mean(
+        torch.stack(
+            [p[:len(pred_prob_all[-1])] for p in pred_prob_all]
+        ), dim=0
+    )
 
-    # Convierte las probabilidades en un diccionario válido
     probabilities_dict = dict(zip(class_names, average_probabilities[0]))
 
-    # Suponiendo que probabilities_dict contiene el diccionario con tensores
     probabilities = probabilities_dict
-    sentiment = max(probabilities, key=probabilities.get)  # Obtiene la clave con el valor máximo
-    probability_value = probabilities[sentiment].item()  # Obtiene el valor correspondiente a la clave
+    sentiment = max(probabilities, key=probabilities.get)
+    probability_value = probabilities[sentiment].item()
 
     print(f"sentiment = {sentiment}, probabilities = {probability_value}")
 
@@ -171,6 +179,13 @@ def predict_sentiment(text: str):
 
 @app.post("/predict", response_model=SentimentResponse)
 def _predict(request: SentimentRequest):
+    """
+    Return a prediction to the user.
+    Args:
+        request: Request with some text to be analyzed
+    Returns:
+        Sentiment prediction on that text
+    """
     try:
         sentiment, prob = predict_sentiment(request.text)
         return SentimentResponse(sentiment=sentiment, probabilities=prob)
