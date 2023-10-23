@@ -11,10 +11,6 @@
 - **Homepage:** [Women's E-Commerce Clothing Reviews](https://www.kaggle.com/datasets/nicapotato/womens-ecommerce-clothing-reviews)
 - **Repository:** [Women's E-Commerce Clothing Reviews](https://www.kaggle.com/datasets/nicapotato/womens-ecommerce-clothing-reviews)
 
-  
-- **Paper:** {{ paper_url | default("", true)}}
-- **Leaderboard:** {{ leaderboard_url | default("", true)}}
-- **Point of Contact:** {{ point_of_contact | default("", true)}}
 
 ### Dataset Summary
 
@@ -63,61 +59,44 @@ The Women’s Clothing E-Commerce dataset includes the following key data fields
 
 ### Data Splits
 
-{{ data_splits_section | default("[More Information Needed]", true)}}
+Data was split for training, testing and validating. All data was derived from the used dataset and not manually generated.
+The split was done randomly with 70% of the data used for training, 15% for testing and 15% for validating.
 
 ## Dataset Creation
 
 ### Curation Rationale
 
-{{ curation_rationale_section | default("[More Information Needed]", true)}}
+The dataset was created for Natural Language Processing and Sentiment Analysis. Providing ht review text and Rating, Recommended IND attributes the model can learn which words have a positive connotation and which have a noegative one.
 
 ### Source Data
 
 #### Initial Data Collection and Normalization
 
-{{ data_collection_section | default("[More Information Needed]", true)}}
+Data was collected from a women's clothes store website review section and anonymized to keep the consumer's and store's privacy. All references to the store's name were replaced with the word retailer.
 
 #### Who are the source language producers?
 
-{{ source_language_producers_section | default("[More Information Needed]", true)}}
-
-### Annotations
-
-#### Annotation process
-
-{{ annotation_process_section | default("[More Information Needed]", true)}}
-
-#### Who are the annotators?
-
-{{ who_are_annotators_section | default("[More Information Needed]", true)}}
+Data was not computer generated, instead it was produced by costumers as it consists of real clothes' reviews from a real unknown retailer.
+Data was collected by @nicapotato and uploaded to kaggle.
 
 ### Personal and Sensitive Information
 
-{{ personal_and_sensitive_information_section | default("[More Information Needed]", true)}}
+The dataset has erased identity categories to avoid conflicts with personal and sensitive information.
 
 ## Considerations for Using the Data
 
-### Social Impact of Dataset
+### Known Limitations
 
-{{ social_impact_section | default("[More Information Needed]", true)}}
+The dataset is not balanced which creates the need to balance it manually that causes some distorsion on the dataset as values have to be modified to reach a balance.
 
-### Discussion of Biases
-
-{{ discussion_of_biases_section | default("[More Information Needed]", true)}}
-
-### Other Known Limitations
-
-{{ known_limitations_section | default("[More Information Needed]", true)}}
+The dataset is also written in a unique language which doesn't contribute to enrichening NLP in multiple languages.
 
 ## Additional Information
 
-### Dataset Curators
-
-{{ dataset_curators_section | default("[More Information Needed]", true)}}
-
 ### Licensing Information
 
-{{ licensing_information_section | default("[More Information Needed]", true)}}
+[CC0: Public Domain](https://creativecommons.org/publicdomain/zero/1.0/)
+
 
 ### Citation Information
 
@@ -125,4 +104,4 @@ The Women’s Clothing E-Commerce dataset includes the following key data fields
 
 ### Contributions
 
-{{ contributions_section | default("[More Information Needed]", true)}}
+Thanks to @mrc03, @nicapotato and @BurhanYKiyakoglu for adding this dataset.
