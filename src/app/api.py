@@ -68,7 +68,7 @@ def _load_models():
 
 @app.get("/", tags=["General"])  # path operation decorator
 @construct_response
-def _index():
+def _index(request: Request):
     """Root endpoint."""
     response = {
         "message": HTTPStatus.OK.phrase,
