@@ -33,3 +33,4 @@ codecarbon==2.3.1
 fastapi==0.104.0
 httpx==0.25.0
 uvicorn[standard]
+flake8==6.0.0

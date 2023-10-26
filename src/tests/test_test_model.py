@@ -81,7 +81,10 @@ def test_accuracy_metric():
     """
 
     # Load the JSON file containing the accuracy metric
-    with open(ROOT_PATH / 'metrics' / 'scores.json', "r", encoding="utf-8") as scores_file:
+    with open(
+            ROOT_PATH / 'metrics' / 'scores.json', "r",
+            encoding="utf-8"
+    ) as scores_file:
         scores = json.load(scores_file)
 
     # Check if the "accuracy" key exists and the value is above 0.75

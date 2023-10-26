@@ -76,7 +76,11 @@ def test_get_stemmed_text_output(review, stemmed):
     "review, tokenized, stemmed",
     [
         ('These trousers are so cool!', 'trousers cool', 'trouser cool'),
-        ('I love how this skirt suits me.', 'love skirt suits', 'love skirt suit'),
+        (
+                'I love how this skirt suits me.',
+                'love skirt suits',
+                'love skirt suit'
+        ),
         (
                 'The color could be better, but it is not a bad shirt at all.',
                 'color could better bad shirt',

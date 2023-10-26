@@ -119,7 +119,9 @@ def train_and_save_model(x, y, stem=True):
     random_forest = RandomForestClassifier()
     random_forest.fit(x, y)
     # Determine the model file name based on whether stemming is applied
-    filename = "model/model_rf_stem.joblib" if stem else "model/model_rf.joblib"
+    filename = (
+        "model/model_rf_stem.joblib" if stem else "model/model_rf.joblib"
+    )
     # Save the model
     joblib.dump(random_forest, filename)
 
@@ -133,7 +135,9 @@ def loading(stem=True):
          model: The loaded model.
     """
     # Determine the model file name based on whether stemming is applied
-    filename = "model/model_rf_stem.joblib" if stem else "model/model_rf.joblib"
+    filename = (
+        "model/model_rf_stem.joblib" if stem else "model/model_rf.joblib"
+    )
     # Load the model
     model = joblib.load(filename)
     return model
@@ -154,7 +158,6 @@ def prediction(model, x_test) -> list:
 
 
 if __name__ == '__main__':
-
     tracking()
     # Load and preprocess the data
     test = get_data_from_local(PROCESSED_TEST_DATA_PATH)

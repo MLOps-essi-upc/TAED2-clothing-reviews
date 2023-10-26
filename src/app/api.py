@@ -33,6 +33,7 @@ app = FastAPI(
 
 sentiment_model = None
 
+
 def construct_response(f):
     """Construct a JSON response for an endpoint's results."""
 
