@@ -24,7 +24,10 @@ def get_data_from_source() -> None:
     # path where to save data csv
     download_dir = RAW_DATA_PATH
     # path where to find data to get kaggle dataset
-    connection_source = ROOT_PATH / "src" / "config" / "kaggle_connection_config.json"
+    connection_source = (
+            ROOT_PATH / "src" / "config" /
+            "kaggle_connection_config.json"
+    )
 
     with open(connection_source, "r", encoding="utf-8") as file:
         source_data = json.load(file)
