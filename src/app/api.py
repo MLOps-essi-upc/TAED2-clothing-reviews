@@ -31,6 +31,7 @@ app = FastAPI(
     version="0.1",
 )
 
+sentiment_model = None
 
 def construct_response(f):
     """Construct a JSON response for an endpoint's results."""
@@ -60,10 +61,10 @@ def construct_response(f):
 @app.on_event("startup")
 def _load_models():
     """Loads models"""
+    global sentiment_model
     sentiment_model = torch.load(
         MODEL_PATH / "transfer-learning.pt", map_location="cpu"
     )
-    return sentiment_model
 
 
 @app.get("/", tags=["General"])  # path operation decorator
@@ -124,9 +125,8 @@ def predict_sentiment(text: str):
         dataset=dataset_text, shuffle=True,
         batch_size=4
     )
-    model = _load_models()
 
-    model.eval()
+    sentiment_model.eval()
 
     #  A list for all logits
     logits_all = []
@@ -142,7 +142,7 @@ def predict_sentiment(text: str):
         # Disable the gradient calculation
         with torch.no_grad():
             # Compute the model output
-            outputs = model(**batch)
+            outputs = sentiment_model(**batch)
         # Get the logits
         logits = outputs.logits
         # Append the logits batch to the list
