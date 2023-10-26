@@ -7,9 +7,11 @@ import joblib
 from sklearn.svm import SVC
 from src.data.get_and_save_data import get_data_from_local
 from src.models.old_models.model_random_forest import (
-tracking, vectorization, classification_task, stemming
+    tracking, vectorization,
+    classification_task, stemming
 )
 from src import PROCESSED_TEST_DATA_PATH, PROCESSED_TRAIN_DATA_PATH
+
 
 def train_and_save_svc_model(x_train, y_train, stem=True):
     """
@@ -60,7 +62,6 @@ def loading(stem=True) -> SVC:
 
 
 if __name__ == '__main__':
-
     tracking()
     # Load and preprocess the data
     test = get_data_from_local(PROCESSED_TEST_DATA_PATH)
