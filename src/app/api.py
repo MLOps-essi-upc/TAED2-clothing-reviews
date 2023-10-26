@@ -175,7 +175,7 @@ def predict_sentiment(text: str):
 
     print(f"sentiment = {sentiment}, probabilities = {probability_value}")
 
-    return sentiment, probability_value
+    return sentiment, round(probability_value,3)
 
 
 @app.post("/predict", response_model=SentimentResponse)
