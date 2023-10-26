@@ -27,11 +27,17 @@ def stemming(df, stem=True) -> pd.DataFrame:
     """
     if stem:
         df.drop(
-            ['Review Text'], axis='columns', errors='ignore', inplace=True
+            ['Review Text'],
+            axis='columns',
+            errors='ignore',
+            inplace=True
         )
     else:
         df.drop(
-            ['Stemmed Review Text'], axis='columns', errors='ignore', inplace=True
+            ['Stemmed Review Text'],
+            axis='columns',
+            errors='ignore',
+            inplace=True
         )
     return df
 
@@ -42,7 +48,8 @@ def tokenize_dataset(data) -> Dataset:
     using a specified tokenizer.
 
     Args:
-        data (datasets.arrow_dataset.Dataset): The input Hugging Face arrow dataset.
+        data (datasets.arrow_dataset.Dataset): The input
+        Hugging Face arrow dataset.
 
     Returns:
         datasets.arrow_dataset.Dataset: Data tokenized.
@@ -52,13 +59,15 @@ def tokenize_dataset(data) -> Dataset:
     tokenizer = AutoTokenizer.from_pretrained("bert-base-cased")
 
     return tokenizer(
-        data["Review Text"], max_length=128, truncation=True, padding="max_length"
+        data["Review Text"], max_length=128,
+        truncation=True, padding="max_length"
     )
 
 
 def tokenize_dataset_stem(data) -> Dataset:
     """
-    Tokenizes "Stemmed Review Text" data in a Hugging Face arrow dataset
+    Tokenizes "Stemmed Review Text" data in a
+    Hugging Face arrow dataset
     using a specified tokenizer.
 
     Args:
@@ -73,7 +82,8 @@ def tokenize_dataset_stem(data) -> Dataset:
     tokenizer = AutoTokenizer.from_pretrained("bert-base-cased")
 
     return tokenizer(
-        data["Stemmed Review Text"], max_length=128, truncation=True, padding="max_length"
+        data["Stemmed Review Text"], max_length=128,
+        truncation=True, padding="max_length"
     )
 
 
@@ -93,16 +103,20 @@ def preprocess_and_tokenize_data(data, stem=True) -> Dataset:
     # Tokenize the data sets
     if stem:
         dataset = hg_data.map(tokenize_dataset_stem)
-        # Remove the review and index columns because it will not be used in the model
+        # Remove the review and index columns because
+        # it will not be used in the model
         dataset = dataset.remove_columns(["Stemmed Review Text"])
     else:
         dataset = hg_data.map(tokenize_dataset)
-        # Remove the review and index columns because it will not be used in the model
+        # Remove the review and index columns because
+        # it will not be used in the model
         dataset = dataset.remove_columns(["Review Text"])
 
-    # Rename label to labels because the model expects the name labels
+    # Rename label to labels because the model
+    # expects the name labels
     dataset = dataset.rename_column(
-        "Top Product", "labels"
+        "Top Product",
+        "labels"
     )
 
     # Change the format to PyTorch tensors
@@ -113,7 +127,8 @@ def preprocess_and_tokenize_data(data, stem=True) -> Dataset:
 
 def training(train_dataloader, model, which_device='cpu'):
     """
-    Train a machine learning model using the provided DataLoader and model.
+    Train a machine learning model using
+    the provided DataLoader and model.
     Args:
         train_dataloader (DataLoader):
         - A DataLoader containing training data.
@@ -134,16 +149,22 @@ def training(train_dataloader, model, which_device='cpu'):
     optimizer = AdamW(params=model.parameters(), lr=5e-6)
 
     # Set up the learning rate scheduler
-    lr_scheduler = get_scheduler(name="linear",
-                                 optimizer=optimizer,
-                                 num_warmup_steps=0,
-                                 num_training_steps=num_training_steps)
+    lr_scheduler = get_scheduler(
+        name="linear",
+        optimizer=optimizer,
+        num_warmup_steps=0,
+        num_training_steps=num_training_steps
+    )
 
     if which_device == 'cpu':
         device = torch.device('cpu')
     else:
         # Use GPU if it is available
-        device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+        device = (
+            torch.device(
+                "cuda"
+            ) if torch.cuda.is_available() else torch.device("cpu")
+        )
 
     model.to(device)
 
@@ -169,5 +190,4 @@ def training(train_dataloader, model, which_device='cpu'):
 
 
 if __name__ == '__main__':
-
     pass
