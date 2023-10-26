@@ -18,7 +18,6 @@ from src import ROOT_PATH
 from src.models.train_model import tokenize_dataset
 from src.app.schemas import SentimentRequest, SentimentResponse
 
-
 MODEL_PATH = ROOT_PATH / "model"
 
 model_wrappers_list: List[dict] = []
@@ -175,7 +174,7 @@ def predict_sentiment(text: str):
 
     print(f"sentiment = {sentiment}, probabilities = {probability_value}")
 
-    return sentiment, round(probability_value,3)
+    return sentiment, round(probability_value, 3)
 
 
 @app.post("/predict", response_model=SentimentResponse)
