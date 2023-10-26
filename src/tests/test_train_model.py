@@ -88,11 +88,17 @@ def mock_dataloader():
     on test_training function.
     """
 
-    train_data = get_data_from_local(PROCESSED_TRAIN_DATA_PATH / "train_data.csv")
+    train_data = get_data_from_local(
+        PROCESSED_TRAIN_DATA_PATH / "train_data.csv"
+    )
     use_stemming = True
     train_data = stemming(train_data, use_stemming)
-    dataset_train = preprocess_and_tokenize_data(train_data, use_stemming)
-    train_dataloader = DataLoader(dataset=dataset_train, shuffle=True, batch_size=4)
+    dataset_train = preprocess_and_tokenize_data(
+        train_data, use_stemming
+    )
+    train_dataloader = DataLoader(
+        dataset=dataset_train, shuffle=True, batch_size=4
+    )
 
     return train_dataloader
 
