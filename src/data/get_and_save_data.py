@@ -23,16 +23,17 @@ def get_data_from_source() -> None:
 
     # path where to save data csv
     download_dir = RAW_DATA_PATH
-    # path where to find data to get kaggle dataset
+    # path where to find configs to get kaggle dataset
     connection_source = (
             ROOT_PATH / "src" / "config" /
             "kaggle_connection_config.json"
     )
 
+    # read configs file
     with open(connection_source, "r", encoding="utf-8") as file:
         source_data = json.load(file)
 
-    # save json data
+    # save json configs
     username = source_data["username"]
     dataset_name = source_data["dataset_name"]
 

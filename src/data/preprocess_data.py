@@ -15,7 +15,6 @@ GET_DATA_FROM_SOURCE = True
 
 
 def dropping(dataframe: pd.DataFrame) -> pd.DataFrame:
-
     """
         Erases all non-necessary columns from the DataFrame.
 
@@ -26,6 +25,7 @@ def dropping(dataframe: pd.DataFrame) -> pd.DataFrame:
             dataframe: The changed DataFrame.
     """
 
+    # drop the existing columns from the list that are not needed
     dataframe.drop(
         ["Unnamed: 0", "Title", "Positive Feedback Count", "Division Name",
          "Department Name", "Class Name", "Age",
@@ -37,7 +37,6 @@ def dropping(dataframe: pd.DataFrame) -> pd.DataFrame:
 
 
 def binarization(dataframe: pd.DataFrame) -> pd.DataFrame:
-
     """
         Takes the Ratings variable and binarizes its values to 1 or 0.
 
@@ -48,8 +47,10 @@ def binarization(dataframe: pd.DataFrame) -> pd.DataFrame:
             dataframe: Modified DataFrame.
     """
 
+    # map rating values over 4 to 1, to 0 otherwise
     dataframe.loc[dataframe['Rating'] <= 4, 'Recommended IND'] = 0
     dataframe.loc[dataframe['Rating'] > 4, 'Recommended IND'] = 1
+    # rename the column into the target label name
     dataframe.rename(
         columns={'Recommended IND': 'Top Product'}, inplace=True
     )
@@ -58,7 +59,6 @@ def binarization(dataframe: pd.DataFrame) -> pd.DataFrame:
 
 
 def clean_df(dataframe: pd.DataFrame) -> pd.DataFrame:
-
     """
         Transforms a whole dataframe into a simplified version
         that only includes variables that will be used and
@@ -81,13 +81,16 @@ def clean_df(dataframe: pd.DataFrame) -> pd.DataFrame:
 
 if __name__ == '__main__':
 
+    # read data from the downloaded one
     if GET_DATA_FROM_SOURCE:
         get_data_from_source()
 
     df = get_data_from_local(RAW_DATA_PATH)
 
+    # preprocess data
     df = clean_df(df)
 
+    # save it as midterm data
     INTERIM_DATA_PATH = ROOT_PATH / 'data' / 'interim' / 'interim_data.csv'
     save_data_to_local(
         INTERIM_DATA_PATH,

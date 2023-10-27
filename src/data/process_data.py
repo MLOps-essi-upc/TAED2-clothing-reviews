@@ -28,15 +28,20 @@ def tokenization(dataframe) -> pd.DataFrame:
         dataframe: Modified DataFrame.
     """
 
+    # download NLTK data for text processing
     nltk.download("punkt")
     nltk.download("stopwords")
 
-    custom_stopwords = ["'", "''"]
+    # define custom stopwords
+    custom_punctuation = ["'", "''"]
 
+    # extend the stopword list to remove
     english_sw = stopwords.words("english")
     english_sw += list(string.punctuation)
-    english_sw += custom_stopwords
+    english_sw += custom_punctuation
 
+    # convert to lowercase, remove stopwords and delete
+    # numerical and non-alphabetic characters
     dataframe["Review Text"] = dataframe["Review Text"].apply(
         lambda x: " ".join(
             [
@@ -47,6 +52,7 @@ def tokenization(dataframe) -> pd.DataFrame:
         )
     )
 
+    # further cleaning to remove possessive forms
     dataframe["Review Text"] = dataframe["Review Text"].apply(
         lambda text: " ".join([w for w in text.split() if w != "'s"])
     )
@@ -65,7 +71,9 @@ def get_stemmed_text(dataframe) -> pd.DataFrame:
         dataframe: Modified DataFrame.
     """
 
+    # initialize the SnowballStemmer for the English language
     stem = SnowballStemmer("english")
+    # create a new column for stemmed text based on "Review Text"
     dataframe["Stemmed Review Text"] = dataframe["Review Text"].apply(
         lambda text: " ".join([stem.stem(w) for w in text.split()])
     )
@@ -93,11 +101,16 @@ def process_df(dataframe: pd.DataFrame) -> pd.DataFrame:
 
 
 if __name__ == "__main__":
+
+    # read the already preprocessed data
     INTERIM_DATA_PATH = ROOT_PATH / "data" / "interim" / "interim_data.csv"
     df = get_data_from_local(INTERIM_DATA_PATH)
 
+    # processed applying tokenization and stemming
     df = process_df(df)
 
+    # split data into train and test according to proportions
+    # stored on params.yaml
     params_path = ROOT_PATH / "params.yaml"
     with open(params_path, "r", encoding="utf-8") as params_file:
         try:
@@ -111,6 +124,7 @@ if __name__ == "__main__":
     )
     test_data = df.drop(train_data.index)
 
+    # save data on train or test folders
     save_data_to_local(
         PROCESSED_TRAIN_DATA_PATH / "train_data.csv", train_data
     )
