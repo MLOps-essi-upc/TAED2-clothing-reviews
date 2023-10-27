@@ -34,3 +34,5 @@ fastapi==0.104.0
 httpx==0.25.0
 uvicorn[standard]
 flake8==6.0.0
+httpcore==0.18
+typing_extensions==4.8.0
