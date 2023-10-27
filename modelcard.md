@@ -148,8 +148,6 @@ The input data for this model underwent the following preprocessing steps:
 
 These preprocessing steps are crucial to ensure that input data is in the correct format for the model's input requirements. Users who plan to use the model should consider these preprocessing steps when preparing their data.
 
-For more technical details about the preprocessing code and its implementation, please refer to the [Technical Specifications](#technical-specifications) section.
-
 
 #### Training Hyperparameters
 
@@ -157,12 +155,14 @@ The hyperparameteres have been evaluated through experiments in MlFlow and the b
 obtained have been with the follows:
 
 - **Learning rate:** 5e-6
+- **Epochs:** 10
 
-#### Speeds, Sizes, Times [optional]
+#### Speeds, Sizes, Times
 
-<!-- This section provides information about throughput, start/end time, checkpoint size if relevant, etc. -->
-
-{{ speeds_sizes_times | default("[More Information Needed]", true)}}
+- **Training Time:** 1 hour
+- **Inference Time:** 1 minute
+- **Model Size:** 433,4 MB
+- **Tokenizer Max Length:** 128 - the maximum sequence length that the tokenizer is configured to handle.
 
 ## Evaluation
 
@@ -214,18 +214,17 @@ In our examination of the model's behavior, we considered the following:
 
 ## Environmental Impact
 
-Our machine learning experiments were conducted on AWS in the "us-gov-west-1" region. This region has a carbon efficiency of 0.3 kgCO₂eq/kWh, representing the amount of carbon dioxide equivalent emissions per kilowatt-hour of electricity used.
+Our machine learning experiments were conducted using a private infrastructure, Kaggle, which has a carbon efficiency of 0.432 kgCO$_2$eq/kWh. A cumulative of 1 hours of computation was performed on hardware of type Tesla P100 (TDP of 250W).
 
-The total estimated carbon emissions from our machine learning computations amounted to 0.04 kgCO₂eq. Notably, 100% of these emissions were directly offset by our cloud provider, AWS. We are committed to mitigating the environmental impact of our research by participating in AWS's carbon offset programs.
+The total estimated carbon emissions from our machine learning computations amounted to 0.11 kgCO$_2$eqof which 0 percents were directly offset. 
 
 The estimations were carried out using the [MachineLearning Impact calculator](https://mlco2.github.io/impact#compute), a tool that quantifies the environmental impact of machine learning computations.
 
 
-- **Hardware Type:** Intel Xeon E5-2699 (AWS EC2 t2.micro)
+- **Hardware Type:** Tesla P100 (Kaggle T100)
 - **Hours Used:** 1 hour
-- **Cloud Provider:** Amazon Web Services (AWS)
-- **Compute Region:** us-gov-west-1
-- **Carbon Emitted:** 0.04 kgCO₂eq
+- **Compute Region:** Catalonia, Europe
+- **Carbon Emitted:** 0.11 kgCO₂eq
 
 This section provides a clear overview of the environmental considerations and actions taken to offset carbon emissions associated with our machine learning experiments.
 
@@ -238,18 +237,6 @@ Our model is based on the BERT (Bidirectional Encoder Representations from Trans
 **Objective:** The primary objective of our model is to accurately classify reviews in the context of women's clothing. It aims to categorize products as recommended or not recommended based on the sentiment and content expressed in reviews, encompassing both positive and negative sentiments.
 
 BERT was pretrained with the goal of predicting masked tokens within text and also predicting the next sentence. This pretraining helps the model understand contextual relations between words, making it highly effective for various natural language processing tasks.
-
-### Compute Infrastructure
-
-Our machine learning experiments were conducted using the following compute infrastructure:
-
-- **Cloud Provider:** Amazon Web Services (AWS)
-
-- **Instance Type:** EC2 t2.micro (1 virtual CPU)
-
-- **Number of Instances:** 1
-
-- **Storage:** The storage was provisioned with a size of 30 GB
 
 
 ## Model Card Authors
