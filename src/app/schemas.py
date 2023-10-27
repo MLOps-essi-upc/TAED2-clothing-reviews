@@ -1,7 +1,4 @@
 """Definitions for the objects used by our resource endpoints."""
-
-from enum import Enum
-
 from pydantic import BaseModel
 
 
@@ -25,14 +22,3 @@ class SentimentResponse(BaseModel):
 
     sentiment: str
     probabilities: float
-
-
-class SentimentType(Enum):
-    """
-    This class has been created to define
-    with which values will be each sentiment
-    category associated with
-    """
-
-    NoTop = 0
-    TopProduct = 1
