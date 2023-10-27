@@ -1,4 +1,7 @@
-"""Definitions for the objects used by our resource endpoints."""
+"""
+This module is created to add definitions for
+the objects used by our resource endpoints.
+"""
 from pydantic import BaseModel
 
 
@@ -8,6 +11,7 @@ class SentimentRequest(BaseModel):
     which type of variable would define the
     request made by the user
     """
+
     text: str
 
 
