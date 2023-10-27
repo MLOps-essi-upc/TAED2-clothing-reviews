@@ -69,6 +69,7 @@ def construct_response(f):
 @app.on_event("startup")
 def _load_models():
     """Load machine learning models during application startup."""
+
     global sentiment_model
     sentiment_model = torch.load(
         MODEL_PATH / "transfer-learning.pt", map_location="cpu"
@@ -86,6 +87,7 @@ def _index(request: Request):
     Returns:
         dict: A JSON response
     """
+
     response = {
         "message": HTTPStatus.OK.phrase,
         "status-code": HTTPStatus.OK,
@@ -105,6 +107,7 @@ def preprocess(data) -> Dataset:
     Returns: a Dataset with the review
             in torch format
     """
+
     # Split text into words
     words = data.split()
     data = pd.DataFrame({'Review Text': words})
@@ -136,6 +139,7 @@ def predict_sentiment(text: str):
         probability of containing good
         or bad sentiment
     """
+
     dataset_text = preprocess(text)
     # Input text tokenized
     text_dataloader = DataLoader(
@@ -206,6 +210,7 @@ def _predict(request: SentimentRequest):
     Returns:
         Sentiment prediction on that text
     """
+
     try:
         sentiment, prob = predict_sentiment(request.text)
         return SentimentResponse(sentiment=sentiment, probabilities=prob)
