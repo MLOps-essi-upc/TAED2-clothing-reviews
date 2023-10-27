@@ -1,43 +1,46 @@
 ---
-# For reference on model card metadata, see the spec: https://github.com/huggingface/hub-docs/blob/main/modelcard.md?plain=1
-# Doc / guide: https://huggingface.co/docs/hub/model-cards
-{{ card_data }}
+authors:
+  - Valèria Caro Via
+  - Esther Fanyanàs i Ropero
+  - Claudia Len Manero
+language: en
+name: Sentiment Analysis for Clothing Reviews
+model_type: Pretrained/Fine-Tuned
+dataset:
+  name: Women's E-Commerce Clothing Reviews
+  url: [Dataset Card](https://github.com/MLOps-essi-upc/TAED2-clothing-reviews/blob/main/datasetcard.md)
 ---
 
 # Model Card for Women's E-Commerce Clothing Reviews
 
-The model used is a Long Short-Term Memory (LSTM) model, a type of recurrent neural network (RNN) designed to analyze product reviews and predict whether people are likely to recommend the product or not. 
+The model used is a pretrained BERT model on English language using a masked language modeling (MLM) objective. A transfer learning with this model has been designed to analyze product reviews and predict whether people are likely to recommend the product or not. 
 
 ## Model Details
 
 ### Model Description
 
-The LSTM (Long Short-Term Memory) model is a sequential neural network architecture uniquely
-designed for opinion analysis and product recommendation prediction. It capitalizes on the inherent
-structure of textual data, enabling it to capture intricate dependencies and patterns within reviews.
+This model is a fine-tuned version of BERT (Bidirectional Encoder Representations), which is a transformers model pretrained on a large corpus of English data in a self-supervised fashion. This means it was pretrained on the raw texts only, with no humans labeling them in any way (which is why it can use lots of publicly available data) with an automatic process to generate inputs and labels from those texts. The key characteristics of BERT are as follows:
+
+- Bidirectional - to understand the text  you're looking you'll have to look back (at the previous words) and forward (at the next words)
+- Transformers - The Transformer reads entire sequences of tokens at once. In a sense, the model is non-directional, while LSTMs read sequentially (left-to-right or right-to-left). The attention mechanism allows for learning contextual relations between words (e.g. `his` in a sentence refers to Jim).
+- (Pre-trained) contextualized word embeddings - encode words based on their meaning/context. Nails has multiple meanings - fingernails and metal nails.
+
+BERT was trained by masking 15% of the tokens with the goal to guess them. An additional objective was to predict the next sentence.
+
 Consequently, the model can make binary recommendations by considering both the sentiment and
 content of input reviews.
 
-To enhance its performance, the LSTM model operates bidirectionally, meaning it processes sequences
-both forwards and backwards. This enables it to capture context from both directions and better
-understand the nuances in reviews. Moreover a Dropout, with a rate of 0.2, is implemented within
-the model to prevent overfitting and improve generalization.
-
 
 - **Developed by:** Valèria Caro Via, Esther Fanyanàs i Ropero, Claudia Len Manero
-- **Shared by [optional]:** {{ shared_by | default("[More Information Needed]", true)}}
-- **Model type:** LSTM
+- **Model type:** Transformer
 - **Language(s) (NLP):** English
-- **License:** {{ license | default("[More Information Needed]", true)}}
-- **Finetuned from model [optional]:** {{ finetuned_from | default("[More Information Needed]", true)}}
+- **Finetuned from model Bert Base Cased:** This model was fine-tuned from the "bert-base-cased" model, which is available at https://huggingface.co/bert-base-uncased. 
 
-### Model Sources [optional]
+### Model Sources
 
-<!-- Provide the basic links for the model. -->
+The model finetuned can be downlad in the following link:
 
-- **Repository:** {{ repo | default("[More Information Needed]", true)}}
-- **Paper [optional]:** {{ paper | default("[More Information Needed]", true)}}
-- **Demo [optional]:** {{ demo | default("[More Information Needed]", true)}}
+- **Repository:** https://dagshub.com/claudialen/TAED2-clothing-reviews/src/main/model/transfer-learning.pt
 
 ## Uses
 
@@ -47,11 +50,15 @@ The model is designed to analyze customer reviews and comments in order to under
 
 This is useful for companies to make data-driven decisions, without having to read all the reviews. An idea of the product recommendations will be available and thus be able to make improvements through a global view of all the reviews.
 
-### Downstream Use [optional]
+### Downstream Use
 
-<!-- This section is for the model use when fine-tuned for a task, or when plugged into a larger ecosystem/app -->
+This model is versatile and can be applied to a range of downstream tasks, including but not limited to:
 
-{{ downstream_use | default("[More Information Needed]", true)}}
+- Sentiment analysis: It can be used to determine sentiment in text data, making it valuable for social media analytics, product reviews, and customer feedback analysis.
+
+- Text classification: The model's ability to understand context makes it suitable for tasks like topic classification, spam detection, and content categorization.
+
+The model can be easily integrated into various natural language processing pipelines and frameworks, making it a valuable tool for a wide range of applications.
 
 ### Out-of-Scope Use
 
@@ -63,6 +70,10 @@ The model has been trained from reviews, thus there is a subjective opinion in t
 - The opinion on a product depends on several subjective aspects that are not covered by the model, such as the size of women.
 
 ### Risks
+It's important to be aware of the following risks and limitations when using this model:
+- **Robustness:** The model might be sensitive to input phrasing and might produce different results for slight variations in input text.
+- **Data Quality:** The model's performance depends on the quality and representativeness of the training data. If your data is noisy or unrepresentative, the model's predictions may be less reliable.
+- **Ethical Use:** Users should employ the model in an ethical and responsible manner. Avoid using it for harmful or malicious purposes, such as generating harmful content, fake news, or spam.
 
 
 ### Limitations 
@@ -77,32 +88,67 @@ The model is recommended for analyzing overall women's trends in customer sentim
 
 ## How to Get Started with the Model
 
-Use the code below to get started with the model.
 
-{{ get_started_code | default("[More Information Needed]", true)}}
+To get started with this model, follow the steps below:
+
+1. **Install the Required Libraries:**
+    ```bash
+    pip install torchvision
+    pip install transformers
+    pip install pandas
+    pip install datasets
+
+2. **Load the model:**
+   ```
+   model = torch.load("transfer-learning.pt", map_location = "cpu")
+   ``` 
+3. **Perform Inference**
+   ```
+   text = "I love this dress."
+   words = text.split()
+   data = pd.DataFrame({'Review Text': words})
+   hg_data = Dataset.from_pandas(data)
+   tokenizer = AutoTokenizer.from_pretrained("bert-base-cased")
+   dataset = hg_data.map(tokenizer(
+        hg_data['Review Text'], max_length=128, truncation=True, padding="max_length"
+    ))
+   dataset = dataset.remove_columns(["Review Text"])
+   dataset.set_format("torch")
+   text_dataloader = DataLoader(dataset=dataset_text, shuffle=True, batch_size=4)
+   ```
 
 ## Training Details
 
 ### Training Data
 
-The processed data underwent a split, allocating 85% of the data for the training dataset. Within this
-training dataset, a further division was made, reserving 70% for the primary training subset and 15%
-for data validation.
+The processed data underwent a split, allocating 80% of the data for the training dataset with a random seed of 2023.
 
-<!-- This should link to a Data Card, perhaps with a short stub of information on what the training data is all about as well as documentation related to data pre-processing or additional filtering. -->
-
-{{ training_data | default("[More Information Needed]", true)}}
+[Dataset Card](https://github.com/MLOps-essi-upc/TAED2-clothing-reviews/blob/main/datasetcard.md)
 
 ### Training Procedure 
 
-During the training process, cross-validation for 10 epochs was applied to iteratively
-enhance the model’s performance and robustness. 
+During the training process, this model underwent the following training configuration:
+
+- **Number of Epochs:** 3
+- **Total Training Steps:** 384
 
 <!-- This relates heavily to the Technical Specifications. Content here should link to that section when it is relevant to the training procedure. -->
 
-#### Preprocessing [optional]
+#### Preprocessing
 
-{{ preprocessing | default("[More Information Needed]", true)}}
+The input data for this model underwent the following preprocessing steps:
+
+1. **Text Tokenization:** The input text is tokenized into subword units using the "bert-base-cased" tokenizer.
+
+2. **Data Preparation:** The input text is split into individual words, resulting in a list of words. This list is then converted into a Pandas DataFrame with a column labeled "Review Text."
+
+4. **Tokenization and Formatting:** The data is tokenized using the "bert-base-cased" tokenizer with a maximum sequence length of 128, truncation enabled, and padding applied to ensure consistent input lengths. The resulting dataset was then formatted for PyTorch.
+
+5. **DataLoader Creation:** A PyTorch DataLoader is created for the tokenized and formatted dataset, with a batch size of 4 and shuffle set to True for training.
+
+These preprocessing steps are crucial to ensure that input data is in the correct format for the model's input requirements. Users who plan to use the model should consider these preprocessing steps when preparing their data.
+
+For more technical details about the preprocessing code and its implementation, please refer to the [Technical Specifications](#technical-specifications) section.
 
 
 #### Training Hyperparameters
@@ -110,16 +156,7 @@ enhance the model’s performance and robustness.
 The hyperparameteres have been evaluated through experiments in MlFlow and the best results
 obtained have been with the follows:
 
-- **Batch Size:** 512
-
-- **Embedding Size:** 128
-
-- **Hidden Size:** 256
-
-- **Token Size:** 20000
-
-
-- **Training regime:** {{ training_regime | default("[More Information Needed]", true)}} <!--fp32, fp16 mixed precision, bf16 mixed precision, bf16 non-mixed precision, fp16 non-mixed precision, fp8 mixed precision -->
+- **Learning rate:** 5e-6
 
 #### Speeds, Sizes, Times [optional]
 
@@ -135,102 +172,94 @@ This section describes the evaluation protocols and provides the results.
 
 #### Testing Data
 
-or our test dataset, we employed a 15% split of the preprocessed data.
+For our test dataset, we employed a 15% split of the preprocessed data. This split ensured that a portion of the data was reserved exclusively for evaluating the model's performance.
+[Dataset Card](https://github.com/MLOps-essi-upc/TAED2-clothing-reviews/blob/main/datasetcard.md)
 
-<!-- This should link to a Data Card if possible. -->
-
-{{ testing_data | default("[More Information Needed]", true)}}
 
 #### Factors
 
-<!-- These are the things the evaluation is disaggregating by, e.g., subpopulations or domains. -->
+The evaluation of this model takes into account the following factors, with a focus on women's clothing reviews:
 
-{{ testing_factors | default("[More Information Needed]", true)}}
+- **Clothing Categories:** The model's effectiveness is evaluated for various categories of women's clothing, including but not limited to dresses, tops, bottoms, and accessories.
+
+- **Sentiment Analysis:** The model's performance in understanding sentiment and emotions expressed in reviews, which is especially important in the context of women's clothing where preferences and emotions can vary widely.
+
+- **Fashion Trends:** Consideration of the model's ability to capture and adapt to evolving fashion trends and styles that are prominent in women's clothing.
+
+- **Seasonality:** Evaluation accounts for seasonal variations in fashion, assessing how well the model handles reviews related to different seasons and occasions.
 
 #### Metrics
 
-In assessing the model’s performance, we focused on the Accuracy metric. This choice aligns with our objective of ensuring
+In assessing the model's performance, we have focused on the following primary metric:
+
+- **Accuracy:** The choice of the "Accuracy" metric aligns with our objective of ensuring
 comprehensive representation of opinions. We aim to accurately classify reviews, categorizing products
-as either recommended or not recommended, encompassing both positive and negative sentiments.
-Subsequently, we conducted an evaluation of the model’s performance, resulting in the following
-performance metrics:
+as either recommended or not recommended, encompassing both positive and negative sentiments. Accuracy measures the overall correctness of these classifications.
+
 
 ### Results
 
 Subsequently, we conducted an evaluation of the model’s performance, resulting in the following
 performance metrics:
 
-- **Training Accuracy:** 90.78%
-- **Validation Accuracy:** 77.5%
+- **Accuracy:** 79.81%
 
-{{ results | default("[More Information Needed]", true)}}
 
-#### Summary
+## Model Examination 
 
-{{ results_summary | default("", true) }}
+In our examination of the model's behavior, we considered the following:
 
-## Model Examination [optional]
-
-<!-- Relevant interpretability work for the model goes here -->
-
-{{ model_examination | default("[More Information Needed]", true)}}
+- **Dropout Regularization:** Dropout is a technique used in our model architecture for regularization. It involves randomly deactivating a fraction of neurons during training to prevent overfitting. Our analysis included investigating the impact of dropout on the model's performance, robustness, and generalization capabilities.
+- **Attention Mask:** Examination of attention masks generated by the model's self-attention mechanisms, revealing which parts of the input text the model focuses on when making predictions.
 
 ## Environmental Impact
 
-<!-- Total emissions (in grams of CO2eq) and additional considerations, such as electricity usage, go here. Edit the suggested text below accordingly -->
+Our machine learning experiments were conducted on AWS in the "us-gov-west-1" region. This region has a carbon efficiency of 0.3 kgCO₂eq/kWh, representing the amount of carbon dioxide equivalent emissions per kilowatt-hour of electricity used.
 
-Carbon emissions can be estimated using the [Machine Learning Impact calculator](https://mlco2.github.io/impact#compute) presented in [Lacoste et al. (2019)](https://arxiv.org/abs/1910.09700).
+The total estimated carbon emissions from our machine learning computations amounted to 0.04 kgCO₂eq. Notably, 100% of these emissions were directly offset by our cloud provider, AWS. We are committed to mitigating the environmental impact of our research by participating in AWS's carbon offset programs.
 
-- **Hardware Type:** {{ hardware | default("[More Information Needed]", true)}}
-- **Hours used:** {{ hours_used | default("[More Information Needed]", true)}}
-- **Cloud Provider:** {{ cloud_provider | default("[More Information Needed]", true)}}
-- **Compute Region:** {{ cloud_region | default("[More Information Needed]", true)}}
-- **Carbon Emitted:** {{ co2_emitted | default("[More Information Needed]", true)}}
+The estimations were carried out using the [MachineLearning Impact calculator](https://mlco2.github.io/impact#compute), a tool that quantifies the environmental impact of machine learning computations.
 
-## Technical Specifications [optional]
+
+- **Hardware Type:** Intel Xeon E5-2699 (AWS EC2 t2.micro)
+- **Hours Used:** 1 hour
+- **Cloud Provider:** Amazon Web Services (AWS)
+- **Compute Region:** us-gov-west-1
+- **Carbon Emitted:** 0.04 kgCO₂eq
+
+This section provides a clear overview of the environmental considerations and actions taken to offset carbon emissions associated with our machine learning experiments.
+
+## Technical Specifications 
 
 ### Model Architecture and Objective
 
-{{ model_specs | default("[More Information Needed]", true)}}
+Our model is based on the BERT (Bidirectional Encoder Representations from Transformers) architecture, which is a transformer-based model pretrained on a large corpus of English data in a self-supervised manner. BERT is renowned for its bidirectional understanding of text, allowing it to consider both previous and subsequent words when processing language.
+
+**Objective:** The primary objective of our model is to accurately classify reviews in the context of women's clothing. It aims to categorize products as recommended or not recommended based on the sentiment and content expressed in reviews, encompassing both positive and negative sentiments.
+
+BERT was pretrained with the goal of predicting masked tokens within text and also predicting the next sentence. This pretraining helps the model understand contextual relations between words, making it highly effective for various natural language processing tasks.
 
 ### Compute Infrastructure
 
-{{ compute_infrastructure | default("[More Information Needed]", true)}}
+Our machine learning experiments were conducted using the following compute infrastructure:
 
-#### Hardware
+- **Cloud Provider:** Amazon Web Services (AWS)
 
-{{ hardware | default("[More Information Needed]", true)}}
+- **Instance Type:** EC2 t2.micro (1 virtual CPU)
 
-#### Software
+- **Number of Instances:** 1
 
-{{ software | default("[More Information Needed]", true)}}
+- **Storage:** The storage was provisioned with a size of 30 GB
 
-## Citation [optional]
 
-<!-- If there is a paper or blog post introducing the model, the APA and Bibtex information for that should go in this section. -->
+## Model Card Authors
 
-**BibTeX:**
-
-{{ citation_bibtex | default("[More Information Needed]", true)}}
-
-**APA:**
-
-{{ citation_apa | default("[More Information Needed]", true)}}
-
-## Glossary [optional]
-
-<!-- If relevant, include terms and calculations in this section that can help readers understand the model or model card. -->
-
-{{ glossary | default("[More Information Needed]", true)}}
-
-## More Information [optional]
-
-{{ more_information | default("[More Information Needed]", true)}}
-
-## Model Card Authors [optional]
-
-{{ model_card_authors | default("[More Information Needed]", true)}}
+- **Valèria Caro Via**
+- **Esther Fanyanàs I Ropero**
+- **Claudia Len Manero**
 
 ## Model Card Contact
 
-{{ model_card_contact | default("[More Information Needed]", true)}}
+- **Contact Name:** Esther Fanyanàs I Ropero
+
+- **Contact Email:** esther.fanyanas.i@estudiantat.upc.edu
