@@ -8,7 +8,7 @@ name: Sentiment Analysis for Clothing Reviews
 model_type: Pretrained/Fine-Tuned
 dataset:
    name: Women's E-Commerce Clothing Reviews
-   url: https://github.com/MLOps-essi-upc/TAED2-clothing-reviews/blob/main/datasetcard.md
+   url: [Dataset Card](https://github.com/MLOps-essi-upc/TAED2-clothing-reviews/blob/main/datasetcard.md)
 ---
 
 # Model Card for Women's E-Commerce Clothing Reviews
