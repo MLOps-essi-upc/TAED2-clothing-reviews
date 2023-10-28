@@ -132,7 +132,6 @@ During the training process, this model underwent the following training configu
 - **Number of Epochs:** 3
 - **Total Training Steps:** 384
 
-<!-- This relates heavily to the Technical Specifications. Content here should link to that section when it is relevant to the training procedure. -->
 
 #### Preprocessing
 
@@ -151,11 +150,10 @@ These preprocessing steps are crucial to ensure that input data is in the correc
 
 #### Training Hyperparameters
 
-The hyperparameteres have been evaluated through experiments in MlFlow and the best results
-obtained have been with the follows:
+The hyperparameteres have been evaluated through experiments in [MlFlow](https://dagshub.com/esther.fanyanas.i/MlFlow-transfer-learning.mlflow/#/experiments/1?searchFilter=&orderByKey=attributes.start_time&orderByAsc=false&startTime=ALL&lifecycleFilter=Active&datasetsFilter=W10%3D&modelVersionFilter=All%20Runs&selectedColumns=attributes.%60Source%60,attributes.%60Models%60,attributes.%60Dataset%60&compareRunsMode=CHART&compareRunCharts=W3sidXVpZCI6IjE2OTc5MTI5MjY1NDltem5tNjNwaiIsInR5cGUiOiJCQVIiLCJydW5zQ291bnRUb0NvbXBhcmUiOjEwLCJtZXRyaWNLZXkiOiJ0b3RhbF9sb3NzIn0seyJ1dWlkIjoiMTY5NzkxMjkyNjU0OXk1NDQ3YnE1IiwidHlwZSI6IlBBUkFMTEVMIiwicnVuc0NvdW50VG9Db21wYXJlIjoxMCwic2VsZWN0ZWRQYXJhbXMiOltdLCJzZWxlY3RlZE1ldHJpY3MiOltdfV0%3D) and the best results
+obtained have been with the follows considering 3 epochs:
 
 - **Learning rate:** 5e-6
-- **Epochs:** 10
 
 #### Speeds, Sizes, Times
 
