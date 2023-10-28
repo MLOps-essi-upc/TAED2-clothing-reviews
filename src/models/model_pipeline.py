@@ -54,10 +54,10 @@ if __name__ == '__main__':
             test_data, USE_STEMMING
         )
 
-        # Empty cache
+        # Empty cache to release GPU memory
         torch.cuda.empty_cache()
 
-        # DataLoader
+        # Create DataLoaders for training and evaluation
         train_dataloader = DataLoader(
             dataset=dataset_train, shuffle=True, batch_size=4
         )
@@ -66,7 +66,7 @@ if __name__ == '__main__':
         )
 
         if TRAIN_ALL_MODEL:
-            # Load model
+            # Load a pre-trained BERT model
             model = AutoModelForSequenceClassification.from_pretrained(
                 "bert-base-cased", num_labels=2
             )
@@ -77,16 +77,18 @@ if __name__ == '__main__':
                     output_file="emissions.csv",
                     on_csv_write="update",
             ):
-                # Then fit the model to the training data
+                # Train the model with the training data
                 training(train_dataloader, model)
             mlflow.log_artifact(
                 emissions_output_folder / "emissions.csv"
             )
+            # Save the trained model
             torch.save(model, MODELS_DIR / 'transfer-learning.pt')
         else:
+            # Load the pre-trained model from a saved checkpoint
             model = torch.load(
                 MODELS_DIR / 'transfer-learning.pt',
                 map_location=torch.device('cpu')
             )
-
+        # Evaluate the model's performance and log metrics
         score_function(eval_dataloader, model)
