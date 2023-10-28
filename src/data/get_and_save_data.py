@@ -25,7 +25,7 @@ def get_data_from_source() -> None:
     download_dir = RAW_DATA_PATH
     # path where to find configs to get kaggle dataset
     connection_source = (
-            ROOT_PATH / "src" / "config" /
+            ROOT_PATH / "config" /
             "kaggle_connection_config.json"
     )
 
