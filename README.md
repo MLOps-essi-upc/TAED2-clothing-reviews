@@ -1,7 +1,12 @@
-clothing_reviews
+TAED2 - Clothing Reviews
 ==============================
 
-DL project useful to predict if a product reaches the top standards depending on reviews made by clients on e-commerce
+This project has been carried out within the framework of the Advanced Topics in Data Engineering 2 course with the aim of gaining experience in software engineering and software quality for data science and ML projects, learning to build ML model components following software engineering practices, and deploying ML model components following software engineering practices.
+
+Our deep learning project focuses on predicting product quality based on customer reviews in the women's e-commerce sector. Leveraging advanced machine learning techniques, our model assesses the reviews submitted by customers to determine if a product meets high standards. Through sentiment analysis, it evaluates the sentiment, content, and context of the reviews to make predictions. This project serves as a valuable tool for businesses and consumers alike, streamlining product quality assessments and improving customer experiences.
+
+This repository contains a comprehensive set of scripts, data, and detailed instructions to reproduce both the MLOps pipeline and the project results. By following the provided steps, you can recreate the entire machine learning and operationalization process, ensuring transparency and reproducibility in our work.
+
 
 Project Organization
 ------------
