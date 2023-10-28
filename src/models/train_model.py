@@ -26,6 +26,7 @@ def stemming(df, stem=True) -> pd.DataFrame:
 
     """
     if stem:
+        # If stemming is applied, remove the 'Review Text' column
         df.drop(
             ['Review Text'],
             axis='columns',
@@ -33,6 +34,7 @@ def stemming(df, stem=True) -> pd.DataFrame:
             inplace=True
         )
     else:
+        # If stemming is not applied, remove the 'Stemmed Review Text' column
         df.drop(
             ['Stemmed Review Text'],
             axis='columns',
@@ -55,9 +57,9 @@ def tokenize_dataset(data) -> Dataset:
         datasets.arrow_dataset.Dataset: Data tokenized.
 
     """
-    # Tokenizer from a pretrained model
+    # Initialize the tokenizer from a pretrained model (BERT base cased)
     tokenizer = AutoTokenizer.from_pretrained("bert-base-cased")
-
+    # Tokenize the "Review Text" column
     return tokenizer(
         data["Review Text"], max_length=128,
         truncation=True, padding="max_length"
@@ -78,9 +80,9 @@ def tokenize_dataset_stem(data) -> Dataset:
         datasets.arrow_dataset.Dataset: data tokenized.
 
     """
-    # Tokenizer from a pretrained model
+    # Initialize the tokenizer from a pretrained model (BERT base cased)
     tokenizer = AutoTokenizer.from_pretrained("bert-base-cased")
-
+    # Tokenize the "Stemmed Review Text" column
     return tokenizer(
         data["Stemmed Review Text"], max_length=128,
         truncation=True, padding="max_length"
@@ -134,6 +136,9 @@ def training(train_dataloader, model, which_device='cpu'):
         - A DataLoader containing training data.
         model (transformers.BertForSequenceClassification):
         - The machine learning model to be trained.
+        which_device (str)
+        - A string specifying the target device for training ('cpu' or 'gpu').
+        Default is 'cpu'.
 
     Returns:
         None
