@@ -7,7 +7,7 @@ import joblib
 from sklearn.svm import SVC
 from src.data.get_and_save_data import get_data_from_local
 from src.models.old_models.model_random_forest import (
-    tracking, vectorization,
+    vectorization,
     classification_task, stemming
 )
 from src import PROCESSED_TEST_DATA_PATH, PROCESSED_TRAIN_DATA_PATH
@@ -23,7 +23,9 @@ def train_and_save_svc_model(x_train, y_train, stem=True):
     Returns:
         None
     """
+    # Initialize an SVM classifier with specified hyperparameters
     svc = SVC(random_state=0, C=0.2, kernel='rbf')
+    # Train the SVM model on the training data
     svc.fit(x_train, y_train)
 
     # Determine the model file name based on whether stemming is applied
@@ -35,24 +37,25 @@ def train_and_save_svc_model(x_train, y_train, stem=True):
 
 def prediction(model, x_test) -> list:
     """
-        Makes predictions using a loaded model.
-            Args:
-                model: The loaded model.
-                x_test: Testing dataset.
-            Returns:
-                predictions: Predicted values.
+    Makes predictions using a loaded model.
+    Args:
+        model: The loaded model.
+        x_test: Testing dataset.
+    Returns:
+        predictions: Predicted values.
     """
+    # Use the loaded model to make predictions on the testing dataset
     predictions = model.predict(x_test)
     return predictions
 
 
 def loading(stem=True) -> SVC:
     """
-        Loads a trained model based on the stemming flag.
-        Args:
-            stem (bool): A flag indicating whether stemming is applied.
-        Returns:
-            SVC: The loaded SVM model.
+    Loads a trained model based on the stemming flag.
+    Args:
+        stem (bool): A flag indicating whether stemming is applied.
+    Returns:
+        SVC: The loaded SVM model.
     """
     # Determine the model file name based on whether stemming is applied
     filename = "model/model_rf_stem" if stem else "model/model_rf"
@@ -62,7 +65,6 @@ def loading(stem=True) -> SVC:
 
 
 if __name__ == '__main__':
-    tracking()
     # Load and preprocess the data
     test = get_data_from_local(PROCESSED_TEST_DATA_PATH)
     train = get_data_from_local(PROCESSED_TRAIN_DATA_PATH)
