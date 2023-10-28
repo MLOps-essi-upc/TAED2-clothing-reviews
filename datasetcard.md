@@ -80,9 +80,16 @@ The project's objective was Sentiment Analysis, involving the analysis of textua
 
 In the process of determining which dataset variables affected the positivity of reviews, an examination was conducted on the impact of each variable on the "Recommended IND" and "rating" attributes as these are primary indicators of sentiment in the reviews. The analysis concluded that, aside from these two attributes, no other variables had a significant influence on the classification outcome. This conclusion was drawn from the observation that positive and negative values were evenly distributed across all categories of each analyzed attribute. Consequently, the decision was made to remove them as they did not provide additional value to the dataset.
 
-As part of efforts to refine the dataset and establish a more balanced model, a new attribute, "TopProducts", was introduced. This attribute was created to address the need for data balance. It categorizes products as "Top Products" (TopProduct=1) when they have a rating of 5 and as non-top products (TopProduct=0) when their rating falls below 5.
+As part of efforts to refine the dataset and establish a more balanced model, a new attribute, "Top Product", was introduced. This attribute was created to address the need for data balance. It categorizes products as "Top Product" (Top Product=1) when they have a rating of 5 and as non-top products (Top Product=0) when their rating falls below 5.
 
 This data processing step resulted in the curation of a dataset with a more balanced and pertinent set of attributes, contributing to the success of the Sentiment Analysis project.
+
+The final dataset comprises three columns. The first two columns represent text data, one with stemming applied and the other without stemming, based on user-defined preferences. The third column contains the corresponding product ratings, indicating whether the product is classified as the best product or not.
+
+| Review Text                                  | Top Product | Stemmed Review Text          |
+|---------------------------------------------|------------|-----------------------------|
+| absolutely wonderful silky sexy comfortable | 0          | absolut wonder silki sexi comfort |
+
 
 #### Who are the source language producers?
 
