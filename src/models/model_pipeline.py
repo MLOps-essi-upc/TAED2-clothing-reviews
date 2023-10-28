@@ -10,8 +10,16 @@ from torch.utils.data import DataLoader
 from transformers import AutoModelForSequenceClassification
 import mlflow
 from codecarbon import EmissionsTracker
-from src import ROOT_PATH, PROCESSED_TRAIN_DATA_PATH, PROCESSED_TEST_DATA_PATH
-from src.models.train_model import stemming, preprocess_and_tokenize_data, training
+from src import (
+    ROOT_PATH,
+    PROCESSED_TRAIN_DATA_PATH,
+    PROCESSED_TEST_DATA_PATH
+)
+from src.models.train_model import (
+    stemming,
+    preprocess_and_tokenize_data,
+    training
+)
 from src.models.test_model import score_function
 from src.data.get_and_save_data import get_data_from_local
 
@@ -26,8 +34,12 @@ if __name__ == '__main__':
     with mlflow.start_run():
 
         # Read the train and test datasets
-        train_data = get_data_from_local(PROCESSED_TRAIN_DATA_PATH / "train_data.csv")
-        test_data = get_data_from_local(PROCESSED_TEST_DATA_PATH / "test_data.csv")
+        train_data = get_data_from_local(
+            PROCESSED_TRAIN_DATA_PATH / "train_data.csv"
+        )
+        test_data = get_data_from_local(
+            PROCESSED_TEST_DATA_PATH / "test_data.csv"
+        )
 
         # Set this flag based on whether stemming is applied or not
         USE_STEMMING = True
@@ -35,18 +47,26 @@ if __name__ == '__main__':
         test_data = stemming(test_data, USE_STEMMING)
 
         # Preprocess and tokenize data
-        dataset_train = preprocess_and_tokenize_data(train_data, USE_STEMMING)
-        dataset_test = preprocess_and_tokenize_data(test_data, USE_STEMMING)
+        dataset_train = preprocess_and_tokenize_data(
+            train_data, USE_STEMMING
+        )
+        dataset_test = preprocess_and_tokenize_data(
+            test_data, USE_STEMMING
+        )
 
-        # Empty cache
+        # Empty cache to release GPU memory
         torch.cuda.empty_cache()
 
-        # DataLoader
-        train_dataloader = DataLoader(dataset=dataset_train, shuffle=True, batch_size=4)
-        eval_dataloader = DataLoader(dataset=dataset_test, batch_size=4)
+        # Create DataLoaders for training and evaluation
+        train_dataloader = DataLoader(
+            dataset=dataset_train, shuffle=True, batch_size=4
+        )
+        eval_dataloader = DataLoader(
+            dataset=dataset_test, batch_size=4
+        )
 
         if TRAIN_ALL_MODEL:
-            # Load model
+            # Load a pre-trained BERT model
             model = AutoModelForSequenceClassification.from_pretrained(
                 "bert-base-cased", num_labels=2
             )
@@ -57,13 +77,18 @@ if __name__ == '__main__':
                     output_file="emissions.csv",
                     on_csv_write="update",
             ):
-                # Then fit the model to the training data
+                # Train the model with the training data
                 training(train_dataloader, model)
-            mlflow.log_artifact(emissions_output_folder / "emissions.csv")
+            mlflow.log_artifact(
+                emissions_output_folder / "emissions.csv"
+            )
+            # Save the trained model
             torch.save(model, MODELS_DIR / 'transfer-learning.pt')
         else:
+            # Load the pre-trained model from a saved checkpoint
             model = torch.load(
-                MODELS_DIR / 'transfer-learning.pt', map_location=torch.device('cpu')
+                MODELS_DIR / 'transfer-learning.pt',
+                map_location=torch.device('cpu')
             )
-
+        # Evaluate the model's performance and log metrics
         score_function(eval_dataloader, model)

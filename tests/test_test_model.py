@@ -69,7 +69,7 @@ def test_score_function_output():
     score_function(mock_eval_dataloader, mock_model)
 
     path_to_metrics = ROOT_PATH / 'metrics' / 'scores.json'
-
+    # test if the path has been created
     assert os.path.isfile(path_to_metrics)
 
 
@@ -81,7 +81,10 @@ def test_accuracy_metric():
     """
 
     # Load the JSON file containing the accuracy metric
-    with open(ROOT_PATH / 'metrics' / 'scores.json', "r", encoding="utf-8") as scores_file:
+    with open(
+            ROOT_PATH / 'metrics' / 'scores.json', "r",
+            encoding="utf-8"
+    ) as scores_file:
         scores = json.load(scores_file)
 
     # Check if the "accuracy" key exists and the value is above 0.75
@@ -111,7 +114,7 @@ def test_prediction_minimum_functionality():
     model = mock_load_model('cpu')
 
     predict = prediction(eval_dataloader, model)
-
+    # test if the prediction result is as expected
     assert isinstance(predict, list)
     isinstance(predict[0], torch.Tensor)
     assert len(predict) == 1
@@ -134,6 +137,7 @@ def test_prediction_invariance(sentence1, sentence2, result):
         result: which outputs is expected
     """
 
+    # sentences only differ on non-sentiment words
     data = [
         [sentence1, result],
         [sentence2, result]
@@ -148,7 +152,7 @@ def test_prediction_invariance(sentence1, sentence2, result):
     model = mock_load_model('cpu')
 
     predict = prediction(eval_dataloader, model)
-
+    # test if non-sentiment words affect to the prediction
     assert predict[0][0] == result
     assert predict[0][0] == predict[0][1]
 
@@ -160,6 +164,8 @@ def test_prediction_directional():
     return different outputs.
     """
 
+    # hate has negative sentiment
+    # love has positive sentiment
     data = [
         ['hate skirt', 0],
         ['love skirt', 1]
@@ -174,7 +180,7 @@ def test_prediction_directional():
     model = mock_load_model('cpu')
 
     predict = prediction(eval_dataloader, model)
-
+    # test if changing a sentiment word changes prediction
     assert predict[0][0] == 0
     assert predict[0][1] == 1
     assert predict[0][0] != predict[0][1]

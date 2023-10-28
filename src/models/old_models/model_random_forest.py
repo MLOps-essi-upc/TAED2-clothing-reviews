@@ -4,7 +4,6 @@ related to the random forest model.
 """
 
 import joblib
-import mlflow
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -14,20 +13,6 @@ from sklearn.metrics import recall_score
 from sklearn.metrics import f1_score
 from src.data.get_and_save_data import get_data_from_local
 from src import PROCESSED_TEST_DATA_PATH, PROCESSED_TRAIN_DATA_PATH
-
-
-def tracking():
-    """
-     Set up MLflow tracking URI and enable automatic logging.
-
-     Returns:
-         None
-    """
-    mlflow.set_tracking_uri(
-        "https://github.com/MLOps-essi-upc/TAED2-clothing-reviews"
-        "/tree/develop/src/models/old_models"
-    )
-    mlflow.autolog()
 
 
 def stemming(df, stem=True) -> tuple:
@@ -44,10 +29,16 @@ def stemming(df, stem=True) -> tuple:
          - A tuple containing the feature variable (x) and the
          target variable (y).
     """
+    # Check if stemming should be applied
     if stem:
+        # If stemming is enabled,
+        # use the "Stemmed Review Text" as the feature
         x = df["Stemmed Review Text"]
     else:
+        # If stemming is disabled,
+        # use the original "Review Text" as the feature
         x = df["Review Text"]
+    # Extract the target variable "Top Product"
     y = df["Top Product"]
     return x, y
 
@@ -63,9 +54,11 @@ def vectorization(x_train, x_test):
         - A tuple containing TF-IDF vectors for training
         and testing data.
     """
-
+    # Initialize the TF-IDF vectorizer
     tf_idf_vectorizer = TfidfVectorizer()
+    # Fit and transform the vectorizer on the training data
     x_train_tf_idf = tf_idf_vectorizer.fit_transform(x_train)
+    # Transform the testing data using the same vectorizer
     x_test_tf_idf = tf_idf_vectorizer.transform(x_test)
     return x_train_tf_idf, x_test_tf_idf
 
@@ -119,7 +112,9 @@ def train_and_save_model(x, y, stem=True):
     random_forest = RandomForestClassifier()
     random_forest.fit(x, y)
     # Determine the model file name based on whether stemming is applied
-    filename = "model/model_rf_stem.joblib" if stem else "model/model_rf.joblib"
+    filename = (
+        "model/model_rf_stem.joblib" if stem else "model/model_rf.joblib"
+    )
     # Save the model
     joblib.dump(random_forest, filename)
 
@@ -133,7 +128,9 @@ def loading(stem=True):
          model: The loaded model.
     """
     # Determine the model file name based on whether stemming is applied
-    filename = "model/model_rf_stem.joblib" if stem else "model/model_rf.joblib"
+    filename = (
+        "model/model_rf_stem.joblib" if stem else "model/model_rf.joblib"
+    )
     # Load the model
     model = joblib.load(filename)
     return model
@@ -154,8 +151,6 @@ def prediction(model, x_test) -> list:
 
 
 if __name__ == '__main__':
-
-    tracking()
     # Load and preprocess the data
     test = get_data_from_local(PROCESSED_TEST_DATA_PATH)
     train = get_data_from_local(PROCESSED_TRAIN_DATA_PATH)

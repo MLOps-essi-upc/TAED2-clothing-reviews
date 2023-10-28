@@ -4,7 +4,6 @@ from where users can interact with our model.
 """
 
 from functools import wraps
-from typing import List
 from http import HTTPStatus
 import datetime
 from fastapi import FastAPI, HTTPException, Request
@@ -18,10 +17,8 @@ from src import ROOT_PATH
 from src.models.train_model import tokenize_dataset
 from src.app.schemas import SentimentRequest, SentimentResponse
 
-
+# Model path
 MODEL_PATH = ROOT_PATH / "model"
-
-model_wrappers_list: List[dict] = []
 
 # Define application
 app = FastAPI(
@@ -31,10 +28,21 @@ app = FastAPI(
     version="0.1",
 )
 
+# Global model variable
 sentiment_model = None
 
+
 def construct_response(f):
-    """Construct a JSON response for an endpoint's results."""
+    """
+    Construct a JSON response for an endpoint's results.
+    Args:
+        f (callable): The endpoint function that produces results
+                    to be included in the response.
+
+    Returns:
+        callable: returns a JSON response.
+
+    """
 
     @wraps(f)
     def wrap(request: Request, *args, **kwargs):
@@ -60,17 +68,26 @@ def construct_response(f):
 
 @app.on_event("startup")
 def _load_models():
-    """Loads models"""
+    """Load machine learning models during application startup."""
+
     global sentiment_model
     sentiment_model = torch.load(
         MODEL_PATH / "transfer-learning.pt", map_location="cpu"
     )
 
 
-@app.get("/", tags=["General"])  # path operation decorator
+@app.get("/", tags=["General"])  # Path operation decorator
 @construct_response
 def _index(request: Request):
-    """Root endpoint."""
+    """
+    Root endpoint.
+    Args:
+        request (Request): FastAPI Request object.
+
+    Returns:
+        dict: A JSON response
+    """
+
     response = {
         "message": HTTPStatus.OK.phrase,
         "status-code": HTTPStatus.OK,
@@ -90,6 +107,8 @@ def preprocess(data) -> Dataset:
     Returns: a Dataset with the review
             in torch format
     """
+
+    # Split text into words
     words = data.split()
     data = pd.DataFrame({'Review Text': words})
     # Convert Python DataFrame to Hugging Face arrow dataset
@@ -114,13 +133,15 @@ def predict_sentiment(text: str):
 
     Returns:
         sentiment: prediction
-            1 if positive sentiment
-            0 otherwise
+            Top if positive sentiment
+            No Top otherwise
         probability_value: which
         probability of containing good
         or bad sentiment
     """
+
     dataset_text = preprocess(text)
+    # Input text tokenized
     text_dataloader = DataLoader(
         dataset=dataset_text, shuffle=True,
         batch_size=4
@@ -158,23 +179,26 @@ def predict_sentiment(text: str):
         # to all the predictions
         predictions_all.append(prediction)
 
+    # "No Top" represents negative sentiment, and "Top"
+    # represents positive sentiment.
     class_names = ["No Top", "Top"]
-
+    # Calculate the average probabilities
+    # for each token in the input text.
     average_probabilities = torch.mean(
         torch.stack(
             [p[:len(pred_prob_all[-1])] for p in pred_prob_all]
         ), dim=0
     )
-
+    # Create a dictionary with their respective class names and probabilities
     probabilities_dict = dict(zip(class_names, average_probabilities[0]))
-
-    probabilities = probabilities_dict
-    sentiment = max(probabilities, key=probabilities.get)
-    probability_value = probabilities[sentiment].item()
+    # Extract the sentiment with the highest probability
+    sentiment = max(probabilities_dict, key=probabilities_dict.get)
+    # Get the probability value for the chosen sentiment
+    probability_value = probabilities_dict[sentiment].item()
 
     print(f"sentiment = {sentiment}, probabilities = {probability_value}")
 
-    return sentiment, probability_value
+    return sentiment, round(probability_value, 3)
 
 
 @app.post("/predict", response_model=SentimentResponse)
@@ -186,6 +210,7 @@ def _predict(request: SentimentRequest):
     Returns:
         Sentiment prediction on that text
     """
+
     try:
         sentiment, prob = predict_sentiment(request.text)
         return SentimentResponse(sentiment=sentiment, probabilities=prob)
