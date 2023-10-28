@@ -72,8 +72,9 @@ def prediction(eval_dataloader, model, test=False):
         )
 
     if test:
+        # If test=True, return the computed accuracy
         return metric1.compute()
-
+    # If test=False, return the list of predictions
     return predictions_all
 
 
@@ -89,14 +90,17 @@ def score_function(eval_dataloader, model):
         Returns:
             None
 
-        """
+    """
     # Path to the metrics folder
     Path("metrics").mkdir(exist_ok=True)
     metrics_folder_path = ROOT_PATH / "metrics"
+    # Compute accuracy metrics
     accuracy = prediction(eval_dataloader, model, test=True)
+    # Log the accuracy metrics using MLflow
     mlflow.log_metrics(accuracy)
     # Create a dictionary to store the accuracy
     accuracy_dict = {"accuracy": accuracy}
+    # Save the accuracy metrics as JSON
     with open(
             metrics_folder_path / "scores.json", "w", encoding='utf-8'
     ) as scores_file:
