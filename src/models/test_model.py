@@ -17,7 +17,7 @@ from src import ROOT_PATH
 
 def prediction(eval_dataloader, model, test=False):
     """
-
+    Perform model predictions or calculate test metrics.
     Args:
         eval_dataloader (DataLoader):
         - A DataLoader containing testing data.
@@ -80,15 +80,15 @@ def prediction(eval_dataloader, model, test=False):
 
 def score_function(eval_dataloader, model):
     """
+    Calculate and log accuracy metrics for model evaluation.
+    Args:
+        eval_dataloader (DataLoader):
+        - A DataLoader containing testing data.
+        model (transformers.BertForSequenceClassification):
+        - The machine learning model to be evaluated.
 
-        Args:
-            eval_dataloader (DataLoader):
-            - A DataLoader containing testing data.
-            model (transformers.BertForSequenceClassification):
-            - The machine learning model to be evaluated.
-
-        Returns:
-            None
+    Returns:
+        None
 
     """
     # Path to the metrics folder
