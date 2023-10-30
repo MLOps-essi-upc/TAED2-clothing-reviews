@@ -38,7 +38,7 @@ Project Organization
     ├── dvc.yaml
     ├── fastapi_nginx_template
     │
-    ├── gx              <- Great Expectations configuration and tests folder.
+    ├── gx                 <- Great Expectations configuration and tests folder.
     │   ├── .gitignore
     │   ├── checkpoints
     │   │   └── reviews_checkpoint.yml
@@ -49,15 +49,15 @@ Project Organization
     │   │   └── data_docs_custom_styles.css
     │   └── great_expectations.yml
     │
-    ├── metrics         <- Metrics and emissions folder.
+    ├── metrics            <- Metrics and emissions folder.
     │   ├── emissions.csv
     │   └── scores.json
     │
-    ├── model             <- Trained and serialized model.
+    ├── model              <- Trained and serialized model.
     │   ├── .gitignore
     │   └── transfer-learning.pt.dvc
     │
-    ├── modelcard.md      <- Model card containing model information.
+    ├── modelcard.md       <- Model card containing model information.
     │
     ├── notebooks          <- Jupyter notebook.
     │   └── exploratory_analysis.ipynb
@@ -71,7 +71,7 @@ Project Organization
     ├── src                <- Source code for use in this project.
     │   ├── __init__.py    <- Makes src a Python module
     │   │
-    │   ├── app         <- FastAPI app directory.
+    │   ├── app            <- FastAPI app directory.
     │   │   ├── __init__.py
     │   │   ├── api.py 
     │   │   └── schemas.py
@@ -88,28 +88,25 @@ Project Organization
     │   │   ├── prepare.py
     │   │   └── validate.py
     │   │
-    │   ├── models         <- Scripts to train models and then use trained models to make
-    │   │   │                 predictions
-    │   │   ├── old_models
-    │   │   │   ├── __init__.py
-    │   │   │   ├── model_lstm.py
-    │   │   │   ├── model_random_forest.py
-    │   │   │   └── model_svc.py
-    │   │   ├── __init__.py
-    │   │   ├── model_pipeline.py
-    │   │   ├── test_model.py
-    │   │   └── train_model.py
-    │   │
-    │   ├── __init__.py 
-    │   │
-    │   └── tests  <- PyTest Testing Scripts
-    │       ├── __init__.py
-    │       ├── test_api.py
-    │       ├── test_get_and_save_data.py
-    │       ├── test_preprocess_data.py
-    │       ├── test_process_data.py
-    │       ├── test_test_model.py
-    │       └── test_train_model.py
+    │   └── models         <- Scripts to train models and then use trained models to make
+    │       │                 predictions
+    │       ├── old_models
+    │       │   ├── __init__.py
+    │       │   ├── model_lstm.py
+    │       │   ├── model_random_forest.py
+    │       │   └── model_svc.py
+    │       ├── __init__.py
+    │       ├── model_pipeline.py
+    │       ├── test_model.py
+    │       └── train_model.py
+    │
+    ├── tests              <- PyTest Testing Scripts
+    │   ├── test_api.py
+    │   ├── test_get_and_save_data.py
+    │   ├── test_preprocess_data.py
+    │   ├── test_process_data.py
+    │   ├── test_test_model.py
+    │   └── test_train_model.py
     │
     ├── test_environment.py
     └── tox.ini            <- tox file with settings for running tox; see tox.readthedocs.io
