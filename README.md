@@ -7,31 +7,62 @@ Our deep learning project focuses on predicting product quality based on custome
 
 This repository contains a comprehensive set of scripts, data, and detailed instructions to reproduce both the MLOps pipeline and the project results. By following the provided steps, you can recreate the entire machine learning and operationalization process, ensuring transparency and reproducibility in our work.
 
+For more information, check the [Dataset Card](https://github.com/MLOps-essi-upc/TAED2-clothing-reviews/blob/main/datasetcard.md) and the [Model Card](https://github.com/MLOps-essi-upc/TAED2-clothing-reviews/blob/main/modelcard.md). 
 
 Project Organization
 ------------
 
     ├── LICENSE
-    ├── Makefile           <- Makefile with commands like `make data` or `make train`
     ├── README.md          <- The top-level README for developers using this project.
+    ├── .dvc
+    │   ├── .gitignore
+    │   └── config
+    ├── .dvcignore
+    ├── .gitignore
+    ├── .pylintrc
+    ├── config
+    │   └── kaggle_connection_config.json   <- Configuration file for Kaggle API connection.
     ├── data
-    │   ├── external       <- Data from third party sources.
-    │   ├── interim        <- Intermediate data that has been transformed.
+    │   ├── .gitignore
     │   ├── processed      <- The final, canonical data sets for modeling.
+    │   │   ├── .gitignore
+    │   │   ├── train 
+    │   │   │   └── train_data.csv.dvc 
+    │   │   └── test
+    │   │       └── test_data.csv.dvc 
     │   └── raw            <- The original, immutable data dump.
+    │       └── raw_data.csv.dvc
     │
-    ├── docs               <- A default Sphinx project; see sphinx-doc.org for details
+    ├── datasetcard.md     <- Dataset card containing dataset information.
+    ├── dvc.lock 
+    ├── dvc.yaml
+    ├── fastapi_nginx_template
     │
-    ├── models             <- Trained and serialized models, model predictions, or model summaries
+    ├── gx              <- Great Expectations configuration and tests folder.
+    │   ├── .gitignore
+    │   ├── checkpoints
+    │   │   └── reviews_checkpoint.yml
+    │   ├── expectations
+    │   │   └── .ge_store_backend_id
+    │   │   └── reviews_training_suite.json
+    │   ├── plugins/custom_data_docs/styles
+    │   │   └── data_docs_custom_styles.css
+    │   └── great_expectations.yml
     │
-    ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-    │                         the creator's initials, and a short `-` delimited description, e.g.
-    │                         `1.0-jqp-initial-data-exploration`.
+    ├── metrics         <- Metrics and emissions folder.
+    │   ├── emissions.csv
+    │   └── scores.json
     │
-    ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
+    ├── model             <- Trained and serialized model.
+    │   ├── .gitignore
+    │   └── transfer-learning.pt.dvc
     │
-    ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-    │   └── figures        <- Generated graphics and figures to be used in reporting
+    ├── modelcard.md      <- Model card containing model information.
+    │
+    ├── notebooks          <- Jupyter notebook.
+    │   └── exploratory_analysis.ipynb
+    │
+    ├── params.yaml
     │
     ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
     │                         generated with `pip freeze > requirements.txt`
@@ -40,20 +71,47 @@ Project Organization
     ├── src                <- Source code for use in this project.
     │   ├── __init__.py    <- Makes src a Python module
     │   │
+    │   ├── app         <- FastAPI app directory.
+    │   │   ├── __init__.py
+    │   │   ├── api.py 
+    │   │   └── schemas.py
+    │   │
     │   ├── data           <- Scripts to download or generate data
-    │   │   └── make_dataset.py
+    │   │   ├── __init__.py
+    │   │   ├── get_and_save_data.py
+    │   │   ├── preprocess_data.py
+    │   │   └── process_data.py
     │   │
     │   ├── features       <- Scripts to turn raw data into features for modeling
-    │   │   └── build_features.py
+    │   │   ├── __init__.py
+    │   │   ├── extract.py
+    │   │   ├── prepare.py
+    │   │   └── validate.py
     │   │
     │   ├── models         <- Scripts to train models and then use trained models to make
     │   │   │                 predictions
-    │   │   ├── predict_model.py
+    │   │   ├── old_models
+    │   │   │   ├── __init__.py
+    │   │   │   ├── model_lstm.py
+    │   │   │   ├── model_random_forest.py
+    │   │   │   └── model_svc.py
+    │   │   ├── __init__.py
+    │   │   ├── model_pipeline.py
+    │   │   ├── test_model.py
     │   │   └── train_model.py
     │   │
-    │   └── visualization  <- Scripts to create exploratory and results oriented visualizations
-    │       └── visualize.py
+    │   ├── __init__.py 
+    │   │
+    │   └── tests  <- PyTest Testing Scripts
+    │       ├── __init__.py
+    │       ├── test_api.py
+    │       ├── test_get_and_save_data.py
+    │       ├── test_preprocess_data.py
+    │       ├── test_process_data.py
+    │       ├── test_test_model.py
+    │       └── test_train_model.py
     │
+    ├── test_environment.py
     └── tox.ini            <- tox file with settings for running tox; see tox.readthedocs.io
 
 
