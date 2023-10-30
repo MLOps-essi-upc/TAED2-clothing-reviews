@@ -101,7 +101,6 @@ Project Organization
     │       └── train_model.py
     │
     ├── tests              <- PyTest Testing Scripts
-    │   ├── __init__.py
     │   ├── test_api.py
     │   ├── test_get_and_save_data.py
     │   ├── test_preprocess_data.py
