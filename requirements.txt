@@ -25,14 +25,11 @@ datasets
 evaluate
 joblib
 dvc==2.58.2
-pylint==3.0.1
 pyenchant==3.2.2
 pytest==7.4.2
-pytest-cov==4.1.0
 codecarbon==2.3.1
 fastapi==0.104.0
 httpx==0.25.0
 uvicorn[standard]
-flake8==6.0.0
 httpcore==0.18
 typing_extensions==4.8.0
